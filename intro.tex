@@ -1,19 +1,89 @@
 \subsection{Contexte}
-%objectif du stage
-%labo de recherche
-%labo 3D-sam
 Durant notre master IVI\footnote{Le master Image Vision Interaction est 
 une spécialité du master informatique de l'université de Lille 1}, 
 nous avons l'occasion de réaliser un stage de fin d'étude. J'ai choisi de réaliser ce stage
 dans le laboratoire 3D-SAM spécialisé dans l'acquisition et le traitement d'image 3D 
 à partir de capteur 3D de type Microsoft Kinect. Leur principaux travaux porte sur
 l'analyse de forme d'objet 3D et la modélisation des variation des formes dans des
-vidéo 3D. 
-%J'ai choisi de réaliser mon stage dans un laboratoir de recherche, car je souhaite voir 
+vidéo 3D. Réaliser mon stage dans un laboratoire était une priotité, car mes projets d'avenir
+ne sont pas encore tout à fait planifié et ce stage me permet de me décider sur l'environnement
+de travail qui me convient le mieux. Durant mes deux derniers stage en IUT et en licence 3, j'ai pu
+observer les atouts et les contraintes de chaque environnement, cependant le stage que j'ai effectué 
+durant mon année en IUT relevé plus de l'ingénieurie que de la recherche. Durant ce stage de deuxième
+année d'étude je n'ai pas eu à effectuer un état de l'art, ni à tester des méthodes proposé par 
+d'autre laboratoire de recherche.\\
 
-\subsection{Sujet du stage}
+Ces deux années de master nous ont beaucoup appris sur le traitement d'image et la reconnaissance de 
+forme 2D. Ces sujets mon particulièrement intéressé et je souhaite, durant ce stage, approfondir ces
+notions sur des types de donnée plus complet comme sur des images 3D. C'est pourquoi je réalise mon
+stage dans l'équipe 3D-Sam avec qui j'avais déjà travaillé sur mon projet de fin d'étude. Cette équipe
+dirigé par M. Daoudi comprend cinq membre permanant, un post-doctorant et quatre doctorant. Mes 
+encadrant durant ce stage sont M. Vandeborre et M. Wannous. Ce stage ce déroule dans le cadre du
+projet CrABEx qui concerne la production et l'édition de produit 3D pour des applications de type
+loisir. L'enjeu de ce projet est d'aider les designer 3D dans la création et l'édition de ressources
+graphiques en suggérant des éléments approprié durant leur processus de création ou en générant automatiquement 
+de nouvelles ressources à partir d'éléments existant.
+
+\subsection{Sujet}
+Comme nous pouvons le constater depuis quelques années, les approches 3D intéractive sont de plus en plus 
+présentent dans nos vies, que ce soit dans le domaine de la médecine avec l'utilisation de simulateur
+pour apprendre à réaliser des opérations complexe, dans le loisir avec les jeux vidéo dont le revenu
+mondial en 2015 est de plus de 90 milliard de dollars ou encore dans l'industrie pour visualiser des produit.
+L'engoument pour cette technologie requiert des outils de plus en plus efficace et rapide permettant à
+des personnes de profession plutôt artistique de laisser place à leur imagination sans s'inguiéter de 
+l'aspect technique.\\
+
+Le fait de pourvoir modéliser dans un monde virtuelle des objects du monde réel, et de pouvoir modifier ces 
+objets facilement permettrait au designer de se soustraire de certaines tâches. On peut par exemple modéliser
+une scène ou une personne facilement grâce à une caméra Kinect, afin d'effectuer des modifications. Il serait
+intéressant de récupérer le modèle 3D d'une personne et de modifier quelques unes des parties de son corps avec
+des membre improbable comme un bras de robot. Le principe est le même dans une pièce, si nous souhaitons remplacer
+des meubles d'une pièce intérieur par d'autre plus improbable. L'intêret de cela est d'éviter à un designer de 
+devoir remodéliser une personne ou une pièce existante qui serait déjà idéal pour ce que l'on souhaite réaliser.\\
+
+Ce genre de technologie existe déjà pour modéliser des visages ou des gestes dans des jeux vidéo ou des films d'animation. 
+Il y a par exemple des capture optique basé sur des caméras infrarouge avec des marqueurs réfléchissant. La Kinect fait
+également partie des outils de capture de mouvement, mais elle reste très peu utilisé dans le milieu professionnel.
 
 \subsection{Problèmatique}
+Les caméras 3D nous permettent d'obtenir un nuage de point de l'environnement qu'elles enregistrent. Cependant, ce 
+type de caméra est peu précise et elles sont souvent bruité et comporte des valeurs qui n'existe pas dans le monde 
+réel. Ce bruit dépend de plusieurs facteur comme la luminosité de l'environnement dans lequel nous effectuons l'acquisition
+ou tout simplement la qualité et la précisions du capteur utilisé. La première difficulté lors de ce projet est de réussir 
+à filtrer les données de sorte à ce qu'il ne reste que les données réellement présente.
+L'ensemble des données ne nous intéresse pas forcément. En effet, si nous travaillons sur le corps humain nous n'avons
+pas besoin de l'ensemble de la pièce intérieur, ce surplus de données nous dérange lors de nos traitements. Il faut
+donc trouver une solution permettant de segmenter les données que nous recevons afin de ne garder que certains objets.\\ 
+ 
+Une fois que les données ont été trié, nous avons besoin de reconnaitre les objets présent dans notre scène. Par exemple, dans
+le cas du corps humain, si nous souhaitons modifier un membre comme la main il faut d'abord savoir quel membre représente 
+la main. La reconnaissance d'objet dépend fortement du type de donnée et nécessite généralement d'avoir une base d'apprentissage 
+assez volumineuse.\\
 
-\subsection{Déroulement du stage}
+Lors de la modification d'une partie de la scène, il est nécessaire de connaître la position de l'objet remplacé, afin de pouvoir
+placer le nouvel objet au même endroit et dans le même sens. Cette partie est très délicate surtout pour des membres humain, car
+si le repositionnement n'est pas parfait est qu'il y a un écart entre deux membres, la scène perd toute sa crédibilité et son 
+réalisme.\\
+
+Nous avons donc trois problèmatique majeur dans ce projet. Comment filtrer les données de manière à ne traiter que celles qui nous
+intéresse ? Comment reconnaître un object dans une scène 3D ? Comment connaître la position exacte des objets présents dans notre
+scène ?
+
+\subsection{Organisation}
 %parler de pcl et opencv (opengl ?)
+
+Pour répondre aux questions précédentes, je vais travailler sur deux applications mettant en avant des problématique similaire,
+mais avec deux façon différentes daborder ces problèmes. Je vais travailler dans un premier temps sur une application qui se focalise
+sur le corps humain. Cette application aura pour but d'identifier les membres du corps afin que l'utilisateur puisse les modifier
+grâce à des modèles 3D existant. Les seuls intéractions de l'utilisateur sont donc de clicker sur le membre à modifier et de sélectionner
+un modèle parmi ceux que l'application lui proposera. La seconde application se concentre sur une pièce intérieur comportant plusieurs
+objets. Ici le but est de segmenter la pièce afin de reconnaître les objets présents afin de les ajouter dans une scène. Encore une fois,
+l'utilisateur doit sélectionner un meuble et sélectionner le modèle 3D qui lui convient dans une liste proposé par l'application.\\
+
+Pour ce projet j'utilise la caméra Microsoft Kinect v2, qui est l'une des caméras les plus utilisé dans la littérature. Le SDK fournit
+avec cet outil comporte une segmentation du corps humain, la position du squelette de l'utilisateur et l'algorithme Kinect fusion qui
+permet de construire un modèle 3D à partir du nuage de point fournit par la caméra.\\
+
+Pour réaliser les deux application, je vais utiliser un ensemble de bibliothèque tel que la bibliothèque graphique de Microsoft pour
+la réalisation de l'interface, la bibliothèque PCL\footnote{Point Cloud Librairie} pour les calcules sur les nuages de points et 
+opencv pour travailler sur les images couleurs et les images de profondeur fournit par la Kinect.

@@ -23,59 +23,18 @@
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Etat de l'art}
-
-\subsection{Segmentation d'un environnemnt 3D}
-%récuperation du corps de la personne depuis une image kinect -> a partir des info de la kinect -> le mettre plutot dans les travaux réalisé
-%recuperation d'un objet dans l'environnemnt -> interaction utilisateur
-
-\subsection{Segmentation du corps humain}
-
-\subsection{Reconnaissance des parties du corps humain}
-%FPFH
-%SHOT
-
-\subsection{Appariement de partie du corps avec des models existant}
-%moment d'inertie pour la position des membres
-%PCA
-
-\subsection{Reconnaissance d'objets}
-%dire que la création d'une base de connaissance est plus utile que pour le corps humain
+\input{statOfArt.tex}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Segmentation du corps}
-\subsection{Récupération de l'image du corps humain}
-%SDK de la kinect avec skelette
-\subsection{Préparation de l'image}
-%suppression du bruit et diminution du nombre de point -> pcl
-\subsection{Segmentation du corps humain}
-%distance geodesic avec dikjstra -> pb nombre de voisin
-%superpixel
-\subsection{Reconnaissance des parties du corps}
-%descripteur D2 avec model 3D
-%FPFH
-\subsection{Appariement d'un model 3D}
-%scale à partir d'une bounding box
-%ICP
-%moment d'inertie
-\subsection{Résultat des expérimentations}
-%montrer plusieurs images de la segmentation et montrer ce qui ne convient pas
-%dire que les méthode utilisé seront utilisé dans la suite du projet 
+\section{Modification des membres du corps humain}
+\input{app1.tex}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Reconstruction d'un environnement intérieur}
-\subsection{Segmentation de l'environnement intérieur}
-%segmentation par l'utilisateur
-\subsection{Création d'une base de connaissance}
-%utilisation opencv
-%creation du dictionnaire
-%calcul du descripteur des objets -> detail sur le nombre d'objet et sur le nombre d'exemplaire
-%test sur une base composé de mesh et sur une autre composé de nuage de point
-\subsection{Reconnaissance des objets} 
-%simple comparaison avec le descripteur
-%TODO voir ce qu'on peut mettre dans cette section
+\input{app2.tex}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Evaluation des méthodes}
+%\section{Evaluation des méthodes}
 %TODO aucune méthode d'évaluation déterminé
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
