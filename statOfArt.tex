@@ -2,19 +2,31 @@
 %recuperation d'un objet dans l'environnemnt -> interaction utilisateur
 %dire que la création d'une base de connaissance est plus utile que pour le corps humain
 La première étape lors de notre projet va être de segmenter les images que nous recevons de 
-notre caméra. Les informations contenues dans une image 3D sont nombreuses et nous avons
-besoin de déterminer les éléments important pour nos traitement et le reste. Dans notre scène,
+notre caméra. Les informations contenues dans une image 3D sont nombreuses et nous devons
+déterminer les éléments important pour nos traitements. Dans notre scène,
 nous avons besoin des objets proches ou du corps de la personne en face de la caméra, mais 
 l'environnement autour des ces objets clés n'est pas important et doit être supprimer pour
-gagner du temps lors de nos traitements en supprimant de l'information à traiter. Certaines
-techniques de segmentation sont utilisable aussi bien pour les objets que pour le corps humain.
-Cependant, il existe quelques différences entre le corps humain et un objet comme le fait que le
-corps humain soit flexible et qu'il bouge alors qu'un objet est rigide et il est le plus souvent 
-statique dans les données que nous récupérons pour ce projet.
+gagner du temps lors de nos traitements en supprimant de l'information à traiter.
+Une second segmentation est nécessaire pour le traitement du corps humain. Pour cette étape du projet,
+nous devons segmenter le corps en plusieurs partie pour pouvoir par la suite les reconnaitres. Si cette
+seconde segmentation n'est pas réalisé il ne nous sera pas possible de reconnaître les mains ou encore
+la tête si nous ne savons délimité les parties du corps.  
+% Certaines techniques de segmentation sont utilisables aussi bien pour les objets que pour le corps humain.
+% Cependant, il existe quelques différences entre le corps humain et un objet comme le fait que le
+% corps humain soit flexible et qu'il bouge alors qu'un objet est rigide et il est le plus souvent 
+% statique dans les données que nous récupérons pour ce projet.
  
-\subsubsection{Corps humain}
-
 \subsubsection{Scène intérieur}
+De nombreux travaux ont été réalisé dans la segmentation d'image 2D avant que les caméras 3D ne soit
+ouvert au grand public. Les premières méthode de segmentation reposaient sur la détection de contour
+comme pour la méthode de P. Arbelaez et al\cite{2DSegmentation1}. Leur méthode repose sur le détecteur
+de contour gPb qui est composé de d'un seuillage sur la luminance et sur la couleur et d'une détection
+de texture. La fermeture des contours se fait ensuite en utilisant les superpixels. D'autres méthodes
+2D utilise un simple seuillage en utilisant par exemple la méthode de N. Otsu\cite{Otsu}.
+
+\subsubsection{Corps humain}
+La caméra Kinect avec laquel je travaille me permet de récupérer des information 2D, grâce à une image
+couleur, et 3D, grâce à une image de profondeur. Plusieurs travaux se sont 
 
 \subsection{Reconnaissance d'objets}
 %FPFH
