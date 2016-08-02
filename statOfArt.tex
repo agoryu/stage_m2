@@ -11,6 +11,8 @@ Une second segmentation est nécessaire pour le traitement du corps humain. Pour
 nous devons segmenter le corps en plusieurs partie pour pouvoir par la suite les reconnaitres. Si cette
 seconde segmentation n'est pas réalisé il ne nous sera pas possible de reconnaître les mains ou encore
 la tête si nous ne savons délimité les parties du corps.  
+
+
  
 \subsubsection{Scène intérieur}
 De nombreux travaux ont été réalisé dans la segmentation d'image 2D avant que les caméras 3D ne soit
@@ -34,7 +36,12 @@ d'un nuage de point sont différentes et des méthodes de segmentation se sont d
 T. Rabbani et al\cite{pointCloudSegmentation} utilise les informations obtenus dans un nuage de point afin 
 de calculer les normales de chaque point. Ils segmente ensuite l'image en comparant les normales et en appliquant
 un seuillage sur cette comparaison. Si l'angle formé par les normales de deux points est super au seuil alors
-les points appartiennent à deux régions différentes.
+les points appartiennent à deux régions différentes.\\
+
+Nous pouvons voir que les méthodes cité précédemment sont efficace pour segmenter une scène comportant des objets,
+mais elles ne sont pas applicable à un corps humain. Le principal défaut de ces méthodes pour le corps humain est 
+que celui-ci est trop lisse. La différence entre les normales ou entre les vecteurs de pixel n'est pas assez important
+et est trop instable pour que cela marche sur le corps humain.
 
 \subsubsection{Corps humain}
 La segmentation du corps humain est un sujet très complexe, car contrairement au objet celui-ci bouge et adopte
