@@ -62,6 +62,8 @@ est comparé au posture de la base d'apprentissage. La posture ayant une valeur 
 est la posture de l'utilisateur. De nombreuses méthode utilise cette solution, mais elle modifie le descripteur
 utilisé et la technique d'apprentissage automatique comme nous le verrons dans la suite de ce rapport.
 
+%TODO apporter d'autre exemple + parler du descripteur de shotton
+
 \subsection{Reconnaissance d'objets}
 La reconnaissance d'objet est un sujet assez vaste dans le monde de l'imagerie et il existe de nombreuses
 méthodes dans le domaine que ce soit pour des images 2D ou 3D. Dans le cas d'image 3D la méthode la plus utilisé
@@ -76,10 +78,11 @@ chaque point du modèle 3D. L'ensemble de ces distances permet de créer un hist
 afin de reconnaître un objet. Ce descripteur fournit de bon résultat lorsque les objets à reconnaître sont très 
 différents.\\
 
-Le descripteur PFH\cite{PFH} est un outil permettant de calculer la courbure moyenne d'un voisinage de point en utilisant
+Le descripteur PFH\cite{PFH} (Point Feature Histograms) est un outil permettant de calculer la courbure moyenne d'un voisinage de point en utilisant
 un histogramme multi-dimensionnel. Le calcul de la courbure et le fait que ce soit une généralisation permet d'être invariant 
 en translation et en rotation, et permet également d'être moins sensible au bruit présent dans le nuage de point. Le voisinage 
 dépend de la distance des points avec le point centrale et il ne peut exceder un certain nombre de voisin (voir Fig. \ref{fig:pfhNeighborhood}).
+
 \begin{figure}[!h]
   \begin{center}
     \includegraphics[width=7cm]{image/PFH.png}
@@ -87,11 +90,22 @@ dépend de la distance des points avec le point centrale et il ne peut exceder u
     \label{fig:pfhNeighborhood}
   \end{center}
 \end{figure}
+
 Le descripteur PFH calculé en un point correspond à la relation que ce point a avec l'ensemble des points de son voisinage. Cette relation
 est la différence des normals entre deux points. Chaque classe de l'histogramme est composé de l'ensemble des points du voisinage dont 
-la relation avec le point centrale est similaire.
-%FPFH
-%SHOT
+la relation avec le point centrale est similaire. Une version amélioré du descripteur a été proposé par R. B. Rusu et al\cite{FPFH} appelé
+FPFH (Fast Point Feature Histograms). Cette version est plus rapide, car elle calcul un descripteur PFH simplifié, puis elle construit
+de nouveaux histogrammes à partir des histogramme simplifié précédent (voir Fig. \ref{fig:fpfhNeighborhood}).
+
+\begin{figure}[!h]
+  \begin{center}
+    \includegraphics[width=7cm]{image/FPFH.png}
+    \caption{Exemple de voisinage pris en compte dans le calcul de la courbure du descripteur FPFH}
+    \label{fig:fpfhNeighborhood}
+  \end{center}
+\end{figure}
+
+%TODO SHOT -> voir si on en parle
 \subsubsection{Apprentissage automatique}
 %svm
 %random forest
