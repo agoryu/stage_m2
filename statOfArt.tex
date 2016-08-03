@@ -47,7 +47,7 @@ les points appartiennent à deux régions différentes.\\
 Nous pouvons voir que les méthodes cité précédemment sont efficace pour segmenter une scène comportant des objets,
 mais elles ne sont pas applicable à un corps humain. Le principal défaut de ces méthodes pour le corps humain est 
 que celui-ci est trop lisse. La différence entre les normales ou entre les vecteurs de pixel n'est pas assez important
-et est trop instable pour que cela marche sur le corps humain.
+et est trop instable pour que cela marche sur le corps humain qui peut adopter de nombreuses postures.
 
 \subsubsection{Corps humain}
 La segmentation du corps humain est un sujet très complexe, car contrairement au objet celui-ci bouge et adopte
@@ -55,14 +55,30 @@ des postures différentes. La méthode la plus souvent utilisé pour résoudre c
 la posture de l'utilisateur et lorsque cette posture est connu il est facile de déterminer les différentes partie
 du corps. Ces méthodes nécessitent d'avoir une base de connaissance contenant de nombreuses postures qui doivent
 être segmenter et labelisé avec les différentes parties du corps. J. Shotton et al\cite{kinectSegmentation} ont
-d'abord créé une base d'apprentissage en calculant un descripteur\footnote{Voir \ref{descriptor}}
+d'abord créé une base d'apprentissage en calculant un descripteur
 et une technique d'apprentissage automatique appelé forêt d'arbres décisionnels\cite{randomDecisionForest}. 
+Le descripteur de J. Shotton et al\cite{kinectSegmentation} utilise les informations de l'image de 
+profondeur. Afin de déterminer quel posture a l'utilisateur, il utilise une caractèristique reposant sur la valeur
+de deux pixels, un pixel x et d'un pixel dont l'offset par rapport au pixel x a été définit.
 Lorsque l'utilisateur bouge, le descripteur utilisé précédemment est recalculé sur l'image courante et le résultat 
-est comparé au posture de la base d'apprentissage. La posture ayant une valeur proche du résultat calculé précédemment 
-est la posture de l'utilisateur. De nombreuses méthode utilise cette solution, mais elle modifie le descripteur
-utilisé et la technique d'apprentissage automatique comme nous le verrons dans la suite de ce rapport.
+est comparé au posture de la base d'apprentissage.
+\begin{figure}[!h]
+  \begin{center}
+    \includegraphics[width=5cm]{image/shotton.png}
+    \caption{Deux exemples de caractèristique du descripteur de J. Shotton et al\cite{kinectSegmentation}. 
+    La croix jaune correspond au pixel à classifier et le cercle rouge correspond au pixel décalé.}
+    \label{fig:pfhNeighborhood}
+  \end{center}
+\end{figure}
+%La posture ayant une valeur proche du résultat calculé précédemment est la posture de l'utilisateur. 
+%De nombreuses méthode utilise cette solution, mais elle modifie le descripteur
+%utilisé et la technique d'apprentissage automatique comme nous le verrons dans la suite de ce rapport.
 
-%TODO apporter d'autre exemple + parler du descripteur de shotton
+Comme pour la méthode précédente B. Yoo et al\cite{RDB} utilisent les images de profondeur pour déterminer
+la posture de l'utilisateur. Cependant, leur descripteur repose sur des caractèristiques plus complexe comme
+l'élongation 3D de la forme du corps, le centre de gravité, la rectangularité de la forme ou encore la 
+dissymétrie. Grâce à ces caractèristiques ils forment un descripteur qu'il passe dans leur propre outils
+d'apprentissage automatique appelé \og Randomized Decision Bush \fg.
 
 \subsection{Reconnaissance d'objets}
 La reconnaissance d'objet est un sujet assez vaste dans le monde de l'imagerie et il existe de nombreuses
@@ -107,9 +123,38 @@ de nouveaux histogrammes à partir des histogramme simplifié précédent (voir 
 
 %TODO SHOT -> voir si on en parle
 \subsubsection{Apprentissage automatique}
-%svm
-%random forest
-\subsubsection{Bag of word}
+L'apprentissage automatique est un outil permettant à une machine de prendre des décisions rapidement.
+Pour fonctionner cette outil à besoin de donnée déjà traité sur un domaine précis. Il existe de nombreuses
+techniques d'apprentissage automatique. Lors de ce projets, je me suis intéressé à deux techniques en 
+particulier qui sont parmis les plus utilisé dans le domaine de l'image : la \og forêt d'arbres décisionnels \fg \ et les
+\og machines à vecteurs de support \fg (SVM).\\
+
+Le principe de la forêt d'arbres décisionnels\cite{randomDecisionForest} est de créer un ensemble d'arbre.
+Dans le cas de la méthode de J. Shotton et al\cite{kinectSegmentation}, chaque arbre correspond à une posture.
+Les noeuds des arbres correspondent aux caractéristiques calculés. L'algorithme test des noeuds lui permettant ainsi de tracer un
+chemin vers une feuille qui donne un résultat. L'arbre dont la feuille nous donne le résultat le plus proche 
+de la valeur rechercher nous fournit la solution à notre problème.
+
+\begin{figure}[!h]
+  \begin{center}
+    \includegraphics[width=7cm]{image/randomForest.png}
+    \caption{Exemple d'arbre de décision}
+  \end{center}
+\end{figure}
+
+Le SVM\cite{SVM} quant à lui est un ensemble de technique d'apprentissage supervisé permettant la résolution de 
+problème de discrimination.
+%TODO faire SVM
+
+\subsubsection{Sac de mot (bag of word)}
+Le sac de mot est une représentation dont la première utilisation était de décrire un document texte en fonction d'un dictionnaire.
+Le dictionnaire est un ensemble de mot capable de décrire tous les textes.
+Le principe est de compter le nombre d'occurence d'un mot dans un texte et ce pour chaque mot du dictionnaire. Cette représentation
+à ensuite était utilisé dans le domaine de la vision par ordinateur\cite{BagOfWord} en remplaçant le dictionnaire de mot par un dictionnaire
+de caractèristiques. Grâce à cette représentation nous obtenons un vecteur de la taille du dictionnaire composé du nombre 
+d'occurence de chaque caractèristique du dictionnaire. L'intérêt de cette représentation est d'uniformiser la structure des données
+afin d'avoir un vecteur de même taille pour toutes les images, mais cela nécessite une première phase de création du dictionnaire
+avec l'ensemble des caractèristiques des images traitées.
 
 \subsection{Positionnement de modèle}
 %moment d'inertie pour la position des membres
