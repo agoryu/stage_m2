@@ -1,8 +1,8 @@
 \subsection{Segmentation}
 %recuperation d'un objet dans l'environnemnt -> interaction utilisateur
 %dire que la création d'une base de connaissance est plus utile que pour le corps humain
-La première étape lors de notre projet va être de segmenter les images que nous recevons de 
-notre caméra. Les informations contenues dans une image 3D sont nombreuses et nous devons
+La première étape lors de ce projet va être de segmenter les images que nous recevons de 
+la caméra. Les informations contenues dans une image 3D sont nombreuses et nous devons
 déterminer les éléments important pour nos traitements. Dans notre scène,
 nous avons besoin des objets proches ou du corps de la personne en face de la caméra, mais 
 l'environnement autour des ces objets clés n'est pas important et doit être supprimer pour
@@ -10,7 +10,7 @@ gagner du temps lors de nos traitements en supprimant de l'information à traite
 Une second segmentation est nécessaire pour le traitement du corps humain. Pour cette étape du projet,
 nous devons segmenter le corps en plusieurs partie pour pouvoir par la suite les reconnaitres. Si cette
 seconde segmentation n'est pas réalisé il ne nous sera pas possible de reconnaître les mains ou encore
-la tête si nous ne savons délimité les parties du corps.  
+la tête si nous ne savons pas délimité les parties du corps.  
 
 \begin{figure}[!h]
   \begin{center}
@@ -61,7 +61,7 @@ Le descripteur de J. Shotton et al\cite{kinectSegmentation} utilise les informat
 profondeur. Afin de déterminer quel posture a l'utilisateur, il utilise une caractèristique reposant sur la valeur
 de deux pixels, un pixel x et d'un pixel dont l'offset par rapport au pixel x a été définit.
 Lorsque l'utilisateur bouge, le descripteur utilisé précédemment est recalculé sur l'image courante et le résultat 
-est comparé au posture de la base d'apprentissage.
+est comparé au posture de la base d'apprentissage.\\
 \begin{figure}[!h]
   \begin{center}
     \includegraphics[width=5cm]{image/shotton.png}
@@ -78,7 +78,23 @@ Comme pour la méthode précédente B. Yoo et al\cite{RDB} utilisent les images 
 la posture de l'utilisateur. Cependant, leur descripteur repose sur des caractèristiques plus complexe comme
 l'élongation 3D de la forme du corps, le centre de gravité, la rectangularité de la forme ou encore la 
 dissymétrie. Grâce à ces caractèristiques ils forment un descripteur qu'il passe dans leur propre outils
-d'apprentissage automatique appelé \og Randomized Decision Bush \fg.
+d'apprentissage automatique appelé \og Randomized Decision Bush \fg.\\
+
+Y. Liu et al\cite{GIF} ont développé un autre descripteur spécifique à la reconnaissance de la posture du corps
+humain appelé \og Geodesic Invariant Feature \fg(GIF). 
+Ce descripteur se base sur le calcul de la distance géodésique. La distance géodésique est la distance
+entre deux points d'un modèle 3D en ne passant que par les arrête de ce modèle. Etant donné que ce n'est pas un
+modèle 3D que fournit la Kinect, mais un nuage de point, les auteurs forment un maillage en créant n arrêtes avec
+les n points les plus proches pour un point donné. Cette distance géodésique permet de connaitre l'orientation
+des points. Cette orientation est appliqué sur d'autres caratéristiques sensible à la rotation, ce qui permet
+à ces caractéristique d'être invariant en rotation. 
+
+\begin{figure}[!h]
+  \begin{center}
+    \includegraphics[width=10cm]{image/geodesic.png}
+    \caption{Distance géodésique d'un corps humain}
+  \end{center}
+\end{figure}
 
 \subsection{Reconnaissance d'objets}
 La reconnaissance d'objet est un sujet assez vaste dans le monde de l'imagerie et il existe de nombreuses
@@ -94,10 +110,10 @@ chaque point du modèle 3D. L'ensemble de ces distances permet de créer un hist
 afin de reconnaître un objet. Ce descripteur fournit de bon résultat lorsque les objets à reconnaître sont très 
 différents.\\
 
-Le descripteur PFH\cite{PFH} (Point Feature Histograms) est un outil permettant de calculer la courbure moyenne d'un voisinage de point en utilisant
-un histogramme multi-dimensionnel. Le calcul de la courbure et le fait que ce soit une généralisation permet d'être invariant 
+Le descripteur PFH\cite{PFH} (Point Feature Histograms) est un outil permettant de calculer la courbure moyenne d'un voisinage de point en utilisant un histogramme multi-dimensionnel. Le calcul de la courbure et le fait que ce soit une généralisation permet d'être invariant 
 en translation et en rotation, et permet également d'être moins sensible au bruit présent dans le nuage de point. Le voisinage 
-dépend de la distance des points avec le point centrale et il ne peut exceder un certain nombre de voisin (voir Fig. \ref{fig:pfhNeighborhood}).
+dépend de la distance des points avec le point centrale et il ne peut exceder un certain nombre de voisin 
+(voir Fig. \ref{fig:pfhNeighborhood}).\\
 
 \begin{figure}[!h]
   \begin{center}
@@ -120,7 +136,7 @@ de nouveaux histogrammes à partir des histogramme simplifié précédent (voir 
     \label{fig:fpfhNeighborhood}
   \end{center}
 \end{figure}
-
+ 
 %TODO SHOT -> voir si on en parle
 \subsubsection{Apprentissage automatique}
 L'apprentissage automatique est un outil permettant à une machine de prendre des décisions rapidement.
@@ -133,7 +149,7 @@ Le principe de la forêt d'arbres décisionnels\cite{randomDecisionForest} est d
 Dans le cas de la méthode de J. Shotton et al\cite{kinectSegmentation}, chaque arbre correspond à une posture.
 Les noeuds des arbres correspondent aux caractéristiques calculés. L'algorithme test des noeuds lui permettant ainsi de tracer un
 chemin vers une feuille qui donne un résultat. L'arbre dont la feuille nous donne le résultat le plus proche 
-de la valeur rechercher nous fournit la solution à notre problème.
+de la valeur rechercher nous fournit la solution à notre problème.\\
 
 \begin{figure}[!h]
   \begin{center}
@@ -159,3 +175,16 @@ avec l'ensemble des caractèristiques des images traitées.
 \subsection{Positionnement de modèle}
 %moment d'inertie pour la position des membres
 %PCA
+%ICP
+Afin de réaliser la correspondance entre deux modèles P. J. Besl et al\cite{ICP} développe l'algorithme \og iterative closest point \fg (ICP).
+Cette algorithme recherche l'ensemble des translations et rotations nécessaire à la mise en correspondance de deux modèles similaires. Pour cela,
+celui-ci fonctionne en quatre étapes :
+\begin{itemize}
+  \item Associer les points grâce aux critères du plus proche voisin. Pour cela, il suffit de calculer la distance euclidienne d'un
+   point avec tous les autres points qui font partis du balayage que nous voulons comparer et de prendre la distance la plus petite.
+  \item Estimer la transformation des points grâce à une fonction d'erreur quadratique moyenne, permettant ainsi de trouver la meilleure
+  transformation possible.
+  \item Effectuer la transformation du nuage de points ayant la plus petite erreur.
+  \item Itérer jusqu'à ce qu'on ait atteint la condition de fin fixée par l'utilisateur.
+\end{itemize}
+
