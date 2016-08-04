@@ -117,7 +117,7 @@ dépend de la distance des points avec le point centrale et il ne peut exceder u
 
 \begin{figure}[!h]
   \begin{center}
-    \includegraphics[width=7cm]{image/PFH.png}
+    \includegraphics[width=6cm]{image/PFH.png}
     \caption{Exemple de voisinage pris en compte dans le calcul de la courbure du descripteur PFH}
     \label{fig:pfhNeighborhood}
   \end{center}
@@ -127,7 +127,7 @@ Le descripteur PFH calculé en un point correspond à la relation que ce point a
 est la différence des normals entre deux points. Chaque classe de l'histogramme est composé de l'ensemble des points du voisinage dont 
 la relation avec le point centrale est similaire. Une version amélioré du descripteur a été proposé par R. B. Rusu et al\cite{FPFH} appelé
 FPFH (Fast Point Feature Histograms). Cette version est plus rapide, car elle calcul un descripteur PFH simplifié, puis elle construit
-de nouveaux histogrammes à partir des histogramme simplifié précédent (voir Fig. \ref{fig:fpfhNeighborhood}).
+de nouveaux histogrammes à partir des histogramme simplifié précédent (voir Fig. \ref{fig:fpfhNeighborhood}).\\
 
 \begin{figure}[!h]
   \begin{center}
@@ -136,7 +136,17 @@ de nouveaux histogrammes à partir des histogramme simplifié précédent (voir 
     \label{fig:fpfhNeighborhood}
   \end{center}
 \end{figure}
- 
+
+D. G. Lowe\cite{SIFT} créa un descripteur appelé \og scale-invariant feature transform \fg(SIFT) qui crée
+des points clés dans une image 2D et calcul des descripteurs sur ces points. Ce descripteur permet entre autre
+de détecter des points clés similaires dans deux images différentes d'une même scène tant que les angles de vue
+sont suffisament petit. Les points clés de ce descripteur sont des zones circulaires positionné sur les extrema 
+dans l'espace des échelles, le facteur d'échelle étant proportionnel à la taille de la zone d'intérêt. Une fois que
+que l'on a trouvé la position des points clé, il faut déterminer leur orientation en calculant le gradient dans le voisinage
+du point clé. Grâce au orientation des voisins des point clé il est possible de créer un histogramme des orientation. Ainsi
+l'orientation du point clé correspond aux pics les plus importants de l'histogramme.
+La construction de ces points clés permets à ceux-ci d'être invariant aux changements d'échelle et aux rotations.
+
 %TODO SHOT -> voir si on en parle
 \subsubsection{Apprentissage automatique}
 L'apprentissage automatique est un outil permettant à une machine de prendre des décisions rapidement.
@@ -188,3 +198,4 @@ celui-ci fonctionne en quatre étapes :
   \item Itérer jusqu'à ce qu'on ait atteint la condition de fin fixée par l'utilisateur.
 \end{itemize}
 
+%D. L. Dinh et al\cite{PCA} utilisent 
