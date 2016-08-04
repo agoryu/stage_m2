@@ -12,7 +12,7 @@ nous devons segmenter le corps en plusieurs partie pour pouvoir par la suite les
 seconde segmentation n'est pas réalisé il ne nous sera pas possible de reconnaître les mains ou encore
 la tête si nous ne savons pas délimité les parties du corps.  
 
-\begin{figure}[!h]
+\begin{figure}[!ht]
   \begin{center}
     \includegraphics[width=8cm]{image/segmentation.png}
     \includegraphics[width=5cm]{image/bodySegmentation.png}
@@ -62,12 +62,11 @@ profondeur. Afin de déterminer quel posture a l'utilisateur, il utilise une car
 de deux pixels, un pixel x et d'un pixel dont l'offset par rapport au pixel x a été définit.
 Lorsque l'utilisateur bouge, le descripteur utilisé précédemment est recalculé sur l'image courante et le résultat 
 est comparé au posture de la base d'apprentissage.\\
-\begin{figure}[!h]
+\begin{figure}[!ht]
   \begin{center}
     \includegraphics[width=5cm]{image/shotton.png}
     \caption{Deux exemples de caractèristique du descripteur de J. Shotton et al\cite{kinectSegmentation}. 
     La croix jaune correspond au pixel à classifier et le cercle rouge correspond au pixel décalé.}
-    \label{fig:pfhNeighborhood}
   \end{center}
 \end{figure}
 %La posture ayant une valeur proche du résultat calculé précédemment est la posture de l'utilisateur. 
@@ -89,13 +88,14 @@ les n points les plus proches pour un point donné. Cette distance géodésique 
 des points. Cette orientation est appliqué sur d'autres caratéristiques sensible à la rotation, ce qui permet
 à ces caractéristique d'être invariant en rotation. 
 
-\begin{figure}[!h]
+\begin{figure}[!ht]
   \begin{center}
     \includegraphics[width=10cm]{image/geodesic.png}
     \caption{Distance géodésique d'un corps humain}
   \end{center}
 \end{figure}
 
+%TODO voir si on ajoute la partie avec pca
 \subsection{Reconnaissance d'objets}
 La reconnaissance d'objet est un sujet assez vaste dans le monde de l'imagerie et il existe de nombreuses
 méthodes dans le domaine que ce soit pour des images 2D ou 3D. Dans le cas d'image 3D la méthode la plus utilisé
@@ -115,7 +115,7 @@ en translation et en rotation, et permet également d'être moins sensible au br
 dépend de la distance des points avec le point centrale et il ne peut exceder un certain nombre de voisin 
 (voir Fig. \ref{fig:pfhNeighborhood}).\\
 
-\begin{figure}[!h]
+\begin{figure}[!ht]
   \begin{center}
     \includegraphics[width=6cm]{image/PFH.png}
     \caption{Exemple de voisinage pris en compte dans le calcul de la courbure du descripteur PFH}
@@ -129,7 +129,7 @@ la relation avec le point centrale est similaire. Une version amélioré du desc
 FPFH (Fast Point Feature Histograms). Cette version est plus rapide, car elle calcul un descripteur PFH simplifié, puis elle construit
 de nouveaux histogrammes à partir des histogramme simplifié précédent (voir Fig. \ref{fig:fpfhNeighborhood}).\\
 
-\begin{figure}[!h]
+\begin{figure}[!ht]
   \begin{center}
     \includegraphics[width=7cm]{image/FPFH.png}
     \caption{Exemple de voisinage pris en compte dans le calcul de la courbure du descripteur FPFH}
@@ -161,7 +161,7 @@ Les noeuds des arbres correspondent aux caractéristiques calculés. L'algorithm
 chemin vers une feuille qui donne un résultat. L'arbre dont la feuille nous donne le résultat le plus proche 
 de la valeur rechercher nous fournit la solution à notre problème.\\
 
-\begin{figure}[!h]
+\begin{figure}[!ht]
   \begin{center}
     \includegraphics[width=7cm]{image/randomForest.png}
     \caption{Exemple d'arbre de décision}
@@ -184,7 +184,6 @@ avec l'ensemble des caractèristiques des images traitées.
 
 \subsection{Positionnement de modèle}
 %moment d'inertie pour la position des membres
-%PCA
 %ICP
 Afin de réaliser la correspondance entre deux modèles P. J. Besl et al\cite{ICP} développe l'algorithme \og iterative closest point \fg (ICP).
 Cette algorithme recherche l'ensemble des translations et rotations nécessaire à la mise en correspondance de deux modèles similaires. Pour cela,
@@ -197,5 +196,14 @@ celui-ci fonctionne en quatre étapes :
   \item Effectuer la transformation du nuage de points ayant la plus petite erreur.
   \item Itérer jusqu'à ce qu'on ait atteint la condition de fin fixée par l'utilisateur.
 \end{itemize}
-
-%D. L. Dinh et al\cite{PCA} utilisent 
+\ \\
+Dans la library PCL\cite{PCL}, S. Ushakov implémente une classe basé sur le moment d'inertie\footnote{http://pointclouds.org/documentation/tutorials/moment\_of\_inertia.php\#moment-of-inertia}
+permettant de déterminer les axes principaux d'un nuage de point. Pour cela cette classe calcule la matrice de covariance du nuage de point et 
+en extrait les vecteurs propres. Le plus grand vecteurs propre est considéré comme étant l'axe X et le plus petit devient l'axe Z, ce qui permet 
+d'obtenir un système de coordonnée dans un référentiel local à l'objet.\\   
+\begin{figure}[!ht]
+  \begin{center}
+    \includegraphics[width=4cm]{image/objectAxis.png}
+    \caption{Résultat du calcul des axes sur un nuage de point grâce à la méthode utilisant le moment d'inertie}
+  \end{center}
+\end{figure}
