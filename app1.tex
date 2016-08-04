@@ -114,10 +114,19 @@ géodésique.\\
     \includegraphics[width=6cm]{image/geodesic2.PNG}
     \caption{Résultat du calcul de la distance géodésique sur l'ensemble du nuage de point. Le point vert correspond au centroïde du
     nuage de point. Plus la couleur des points est proche de rouge, plus les points sont proches du centroïde.}
-    \label{fig:cheminGeodesique}
+    \label{fig:geodesique}
   \end{center}
 \end{figure}
 
+Sur les images de la Fig. \ref{fig:geodesique} on peut voir que la distance géodésique n'est pas aussi précise qu'on le souhaiterait.
+Dans la première image on voit que la distance géodésique n'est pas la même sur le bras gauche et sur le bras droit. Cette imprécision
+vient de la qualité du maillage, certains points ne passent pas par le corps et traverse dans le vide du ventre au bras, ce qui réduit
+la distance géodésique au niveau des mains. Dans la second image, on voit que la position du centroïde est très importante, la position
+du centroïde change en fonction de ce que l'on voit du corps humain, ce qui modifie également la distance géodésique. Un simple seuillage
+n'est donc pas suffisant pour segmenter le corps humain.
+
+\subsection{Segmentation du corps humain}
+%recherche du point le plus éloigné puis suppression d'un groupe de point ....
  
 \subsection{Calcule de descripteurs}
 %d2
