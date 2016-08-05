@@ -127,6 +127,13 @@ n'est donc pas suffisant pour segmenter le corps humain.
 
 \subsection{Segmentation du corps humain}
 %recherche du point le plus éloigné puis suppression d'un groupe de point ....
+Malgrès un léger manque de précision de la par du calcul de la distance géodésique sur le corps humain, nous avons testé une
+méthode de segmentation qui ne prend pas en compte cette imprécision. Le principe de cette segmentation est de détecter le
+membre le plus éloigné puis de le supprimer dans la recherche des autres membres. Pour cela, notre algorithme recherche le point
+dont la distance géodésique est la plus grande et forme une zone autour de ce point. Cette zone a un rayon prédéfini qui sera le 
+même pour chaque membre. Elle sera enregistré en mémoire et les points de cette zone seront supprimé du nuage du corps humain dans
+lequel nous effectuons notre recherche.\\
+
  
 \subsection{Calcule de descripteurs}
 %d2
