@@ -8,6 +8,11 @@
 %image
 \usepackage{graphicx}
 
+\usepackage{array,multirow,makecell}
+\setcellgapes{1pt}
+\makegapedcells
+\newcolumntype{C}[1]{>{\centering\arraybackslash }b{#1}}
+
 \title{Approche sémantique de segmentation et de recherche interactive par le contenu issu d’une caméra de profondeur}
 \author{Elliot Vanegue}
 
@@ -33,6 +38,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Modification des membres du corps humain}
 \input{app1.tex}
+\newpage
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Reconstruction d'un environnement intérieur}

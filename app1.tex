@@ -197,3 +197,53 @@ mal labeliser, grâce à la classe StatisticalOutlierRemoval que nous avons vu p
 %icp, fpfh
 %dire qu'il n'est pas possible d'utiliser la distance geodesic pour le positionnement a cause du temps et qu'on ne peut calculer la distance geodesic
 %sur le mesh de remplacement
+La dernière étape de cette première application est d'échanger le nuage de point d'un membre du corps par un modèle 3D représentant cette même partie
+du corps. Cette partie est très complexe à cause de deux problème majeur. Tout d'abord, le type d'information n'est pas le même. Dans un cas nous avons
+un nuage de point dont les points sont très concentrés, mais avec des parties occultés. De l'autre côté, nous avons un modèle 3D avec un nombre de point
+inconnu et donc une concentration de point inconnu, et avec aucune zone occulté si nous prenons en concidération le maillage du modèle. Le second problème
+est que le but recherché est de remplacer la partie du corps humain par quelque chose de plus improbable et étonnant comme une partie du corps d'un monstre,
+d'un robot ou d'un corps dont la musculature est différentes.\\
+
+Nous testons dans un premier temps l'algorithme le plus utilisé dans la littérature en terme de correspondance de modéle 3D. L'algorithme ICP\cite{ICP} est
+disponible dans la librairie PCL\cite{PCL}. Après plusieurs tests sur différentes partie du corps, nous pouvons voir que l'algorithme ICP arrive à déterminer
+la bonne translation si on compare les centroïdes des modèle 3D avec leur partie du corps correspondant. Cependant, ICP ne parvient pas à déterminer
+l'orientation du modèle. Le problème vient du fait que les données ne sont pas les mêmes. Malgrès que les données soit différentes, la forme général
+d'une partie du corps reste la même que ce soit un modèle ou un nuage de point, donc sa boîte englobante reste similaire également. Nous utilisons la méthode
+de moment d'inertie de S. Ushakov disponible dans PCL pour déterminer l'orientation du nuage de point à partir de la matrice de covariance
+(voir Fig. \ref{tab:modelMatching}).\\
+
+\begin{figure}[!ht]
+  \begin{center}
+    \begin{tabular}{C{2cm}|c|c}
+      modèle & position 1 & position 2 \\
+      \hline
+      pince de crabe (main gauche) & \includegraphics[height=4cm]{image/crabPlier1.PNG} & \includegraphics[height=4cm]{image/crabPlier2.PNG} \\
+      \hline
+      main robot (main gauche) & \includegraphics[height=4cm]{image/cyberHand1.PNG} & \includegraphics[height=4cm]{image/cyberHand2.PNG} \\
+      \hline
+      main cybord (main droite) & \includegraphics[height=4cm]{image/cyborgHand1.PNG} & \includegraphics[height=4cm]{image/cyborgHand2.PNG} \\
+      \hline
+      main de monstre (main droite) & \includegraphics[height=4cm]{image/monsterHand1.PNG} & \includegraphics[height=4cm]{image/monsterHand2.PNG} \\
+      \hline
+      tête cyborg & \includegraphics[height=4cm]{image/cyborgHead.PNG} &  \\
+      \hline
+    \end{tabular}
+    \caption{Résultat de remplacement de partie du corps par des modèles 3D}
+    \label{tab:modelMatching}
+  \end{center}
+\end{figure}
+
+Nous pouvons voir sur les résultats de la correspondance de modéle qu'il y a deux problèmes importants. Le premier problème est celui de l'orientation
+de certain modèle 3D. Dans la majorité des tests que nous avons effectué, il y a au moins deux axes sur lequels l'orientation est la bonne. La méthode 
+permet de déterminer l'orientation, mais pas le sens, ce qui implique que dans certains cas l'un des axes soit tourné visuellement du mauvais côté.
+Le second problème provient du non raccord du modèle avec le reste du nuage de point qui est très bien illustré dans l'exemple de la pince de crabe.
+Pourtant dans chacun des cas la translation est juste, nous le vérifions en comparant la position du centroïde entre le modèle 3D et le nuage de point
+(il existe juste un petit décalage sur la profondeur à cause des zones occultées dans le nuage de point). Ce décalage est du à une différence de ce qui est 
+pris en compte comme étant une main par exemple. Dans le nuage de point, la zone considéré comme étant la main comporte la main et le poignet alors que 
+dans le modèle 3D de la main de monstre le poignet n'est pas présent.\\
+
+La mise en place d'une correspondance entre une nuage de point et un modèle 3D d'une partie du corps n'est pas suffisemment précise. Pour pallier
+aux erreurs de l'application, nous avons envisagé de laisser la possibilité à l'utilisateur d'intéragir avec celle-ci. Le plus important est l'orientation
+du modèle et nous savons que en cas d'erreur il faut effectuer une rotation du modèle de 180\degre sur l'un des trois axes. L'utilisateur aurai juste à 
+sélectionner l'axe qui ne convient pas et l'application effectuerai la rotation seul. Maintenant que nous avons vu un cas particulier, nous allons pouvoir
+partir sur une application plus généraliste et plus simple en réutilisant ce qui a été vu pour l'application sur le corps humain.  
