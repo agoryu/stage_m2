@@ -127,19 +127,72 @@ n'est donc pas suffisant pour segmenter le corps humain.
 
 \subsection{Segmentation du corps humain}
 %recherche du point le plus éloigné puis suppression d'un groupe de point ....
+%voir si on parle des superpixels
 Malgrès un léger manque de précision de la par du calcul de la distance géodésique sur le corps humain, nous avons testé une
 méthode de segmentation qui ne prend pas en compte cette imprécision. Le principe de cette segmentation est de détecter le
 membre le plus éloigné puis de le supprimer dans la recherche des autres membres. Pour cela, notre algorithme recherche le point
 dont la distance géodésique est la plus grande et forme une zone autour de ce point. Cette zone a un rayon prédéfini qui sera le 
-même pour chaque membre. Elle sera enregistré en mémoire et les points de cette zone seront supprimé du nuage du corps humain dans
+même pour chaque membre. Elle sera enregistré en mémoire et les points de cette zone seront supprimé du nuage de point du corps humain dans
 lequel nous effectuons notre recherche.\\
 
- 
-\subsection{Calcule de descripteurs}
+\begin{figure}[!ht]
+  \begin{center}
+    \includegraphics[width=3cm]{image/humanFootR.png}
+    \includegraphics[width=3cm]{image/humanFootL.png}
+    \includegraphics[width=3cm]{image/humanHandR.png}
+    \includegraphics[width=3cm]{image/humanHandL.png}
+    \caption{Premières étape de l'algorithme de segmentation du corps humain. Le point vert correspond au point le plus éloigné et la zone rouge
+    l'ensemble des points concidérés comme fesant partie du membre.}
+    \label{fig:geodesique}
+  \end{center}
+\end{figure}
+
+Cette méthode est efficace pour reconnaitre le bout des membres et la tête, mais le reste des parties du corps est moins précis, notamment au niveau
+des épaules où le point de la zone est très instable et peut se retrouver au niveau du torse. De plus la taille des zones dépend de la 
+physionomie de la personne devant la Kinect. 
+%Nous décidons donc de nous concentrer sur les parties que nous arrivons à détecter pour la 
+%suite de nos traitements, c'est-à-dire les mains et la tête.
+
+%\subsection{Calcule de descripteurs}
 %d2
 \subsection{SDK de la Kinect}
 %récuperation du corps de la personne depuis une image kinect -> a partir des info de la kinect -> le mettre plutot dans les travaux réalisé
 %labelisation en fonction de la distance du point avec le joint
+Etant donné que nos résultats pour la segmentation du corps ne sont pas suffisemment précis pour la suite de nos traitements et par faute de
+temps, nous avons décidé d'utiliser les outils fournis avec la Kinect pour continuer le projet. Grâce à la caméra de Microsoft, nous pouvons
+récupérer le squelette de l'utilisateur dont les articulations sont labelisé avec le nom de la partie du corps humain à laquel elle appartient
+(voir Fig. \ref{fig:kinect}.a). De plus, la Kinect nous permet de séparer les points qui appartiennent à l'utilisateur de ceux qui appartiennent
+à l'environnement (voir Fig. \ref{fig:kinect}.b).\\
+
+\begin{figure}[!ht]
+  \begin{center}
+    \includegraphics[width=2cm]{image/kinectSkeleton.png} 
+    \includegraphics[width=8cm]{image/seg1.PNG}
+    \caption{a) Squelette fournit par la caméra Kinect et b) séparation du corps humain de l'environnement}
+    \label{fig:kinect}
+  \end{center}
+\end{figure}
+
+Grâce à ce squelette et au nuage de point nous pouvons segmenter le corps humain. Pour cela, pour chaque articulation nous définissons une zone
+dont la taille est variable en fonction de l'articulation. Les points du nuage sont labelisé en fonction de leur distance avec les articulations.
+Donc un point prend le label de l'articulation dont il est le plus proche.
+
+\begin{figure}[!ht]
+  \begin{center}
+    \includegraphics[height=4cm]{image/lab1.PNG} 
+    \includegraphics[height=4cm]{image/lab2.PNG}
+    \includegraphics[height=4cm]{image/lab3.PNG}
+    \caption{Résultat obtenu avec la segmentation du corps humain via les outils de la Kinect}
+  \end{center}
+\end{figure}
+
+Nous pouvons voir que comme nous l'attendions, le résultat de cette segmentation est bien meilleur puisque nous avons à notre disposition
+beaucoup plus d'information qu'auparavant grâce au squelette de l'utilisateur. Même si cette segmentation n'est pas parfaite comme on peut
+le voir dans la première image, elle reste suffisante pour nos futures traitement. En plus de la segmentation nous connaissons déjà le nom
+des membres grâce aux labels des articulations, nous n'avons donc pas besoin de passer par une étape de reconnaissance des parties du
+corps, car celle-ci a déjà été réalisé par les outils de la Kinect. Il ne reste plus qu'à supprimer le bruit présent dans les membres, les points
+mal labeliser, grâce à la classe StatisticalOutlierRemoval que nous avons vu précédemment.
+
 \subsection{Positionnement}
 %icp, fpfh
 %dire qu'il n'est pas possible d'utiliser la distance geodesic pour le positionnement a cause du temps et qu'on ne peut calculer la distance geodesic
