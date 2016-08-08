@@ -6,7 +6,7 @@ la caméra. Les informations contenues dans une image 3D sont nombreuses et nous
 déterminer les éléments important pour nos traitements. Dans notre scène,
 nous avons besoin des objets proches ou du corps de la personne en face de la caméra, mais 
 l'environnement autour des ces objets clés n'est pas important et doit être supprimer pour
-gagner du temps lors de nos traitements en supprimant de l'information à traiter.
+gagner du temps lors de nos traitements.
 Une second segmentation est nécessaire pour le traitement du corps humain. Pour cette étape du projet,
 nous devons segmenter le corps en plusieurs partie pour pouvoir par la suite les reconnaitres. Si cette
 seconde segmentation n'est pas réalisé il ne nous sera pas possible de reconnaître les mains ou encore
@@ -16,15 +16,15 @@ la tête si nous ne savons pas délimité les parties du corps.
   \begin{center}
     \includegraphics[width=8cm]{image/segmentation.png}
     \includegraphics[width=5cm]{image/bodySegmentation.png}
-    \caption{Exemple de segmentation recherché pour une pièce intérieur et pour le corps humain}
+    \caption{Résultat attendu pour la segmentation d'une pièce intérieur et du corps humain}
   \end{center}
 \end{figure}
  
-\subsubsection{Scène intérieur}
+\subsubsection{Segmentation d'une scène intérieur}
 De nombreux travaux ont été réalisé dans la segmentation d'image 2D avant que les caméras 3D ne soit
-ouvert au grand public. Les premières méthode de segmentation reposaient sur la détection de contour
+ouvert au grand public. Les premières méthodes de segmentation reposaient sur la détection de contour
 comme pour la méthode de P. Arbelaez et al\cite{2DSegmentation1}. Leur méthode repose sur le détecteur
-de contour gPb qui est composé de d'un seuillage sur la luminance et sur la couleur et d'une détection
+de contour gPb qui est composé d'un seuillage sur la luminance et sur la couleur et d'une détection
 de texture. La fermeture des contours se fait ensuite en utilisant les superpixels. D'autres méthodes
 2D utilise un simple seuillage en utilisant par exemple la méthode de N. Otsu\cite{Otsu} pour binariser
 l'image et ainsi la segmenter.\\
@@ -32,18 +32,19 @@ l'image et ainsi la segmenter.\\
 %peut etre que l on peut rajouter des publi utilisant la depthmap
 %voir si on sépare la depthmap et le nuage de point
 Avec l'arrivé des caméras 3D de nombreuses recherche ont été effectué sur la segmentation d'image à partir
-des information extraite de ce type de caméra. S.A.A Shah et al\cite{3DSegmentation1} utilisent les informations
-de l'image de profondeur afin de calculer un vecteur sur chaque pixel. En applicant un seuillage sur la différence
-des vecteurs ils obtiennent une segmentation de l'environnement qui leur permet de détecter des objets dans une pièce.
-Il est possible à partir de l'image de profondeur de créer un nuage de point, ce qui permet d'obtenir les 
-coordonnées 3D des points présents dans l'image de profondeur. Les informations qu'il est possible d'extraire
-d'un nuage de point sont différentes et des méthodes de segmentation se sont développé autour de ces informations.\\
+des informations extraites de ce type de caméra. S.A.A Shah et al\cite{3DSegmentation1} utilisent les informations
+de l'image de profondeur afin de calculer un vecteur sur chaque pixel. Ce vecteur s'obtient en calculant la divergence 
+entre les pixels. En applicant un seuillage sur les vecteurs ils obtiennent une segmentation de l'environnement 
+qui leur permet de détecter des objets dans une pièce. Cette méthode est efficace lorsque l'objet que l'on 
+cherche à détecter est proche de la caméra. Il est possible à partir de l'image de profondeur de créer un 
+nuage de point, ce qui permet d'obtenir les coordonnées 3D des points présents dans l'image de profondeur. Les informations 
+qu'il est possible d'extraire d'un nuage de point sont différentes et des méthodes de segmentation se sont développé autour de ces informations.\\
 
 T. Rabbani et al\cite{pointCloudSegmentation} utilise les informations obtenus dans un nuage de point afin 
 de calculer les normales de chaque point. Ils segmente ensuite l'image en comparant les normales et en appliquant
-un seuillage sur cette comparaison. Si l'angle formé par les normales de deux points est super au seuil alors
-les points appartiennent à deux régions différentes.\\
-
+un seuillage sur cette comparaison. Si les angles formés par les normales du point courant et de ces voisins sont inférieurs au seuil alors
+les points appartiennent à la même région.\\
+ 
 Nous pouvons voir que les méthodes cité précédemment sont efficace pour segmenter une scène comportant des objets,
 mais elles ne sont pas applicable à un corps humain. Le principal défaut de ces méthodes pour le corps humain est 
 que celui-ci est trop lisse. La différence entre les normales ou entre les vecteurs de pixel n'est pas assez important
@@ -207,3 +208,14 @@ d'obtenir un système de coordonnée dans un référentiel local à l'objet.\\
     \caption{Résultat du calcul des axes sur un nuage de point grâce à la méthode utilisant le moment d'inertie}
   \end{center}
 \end{figure}
+
+\subsection{Interaction utilisateur}
+T. Shao et al\cite{interactiveSeg} propose, en plus d'avoir une méthode de segmentation automatique, d'améliorer leur 
+segmentation en impliquant l'utilisateur dans le processus. Ainsi lorsque la segmentation d'une pièce comporte des erreurs, 
+l'utilisateur est amené à rectifier les erreurs de la machine au travers d'une interface.
+Pour cela les auteurs proposent à l'utilisateur de dessiné sur l'objet dont le label est erroné avec la couleur du label 
+qui correspond et l'application change la couleur et le label de l'objet sélectionné. Sur le même principe, J. Xiao et al\cite{interactionSeg2}
+ont créé un système d'interaction afin de facilité la création de leur base d'apprentissage. Pour cela, lorsque l'utilisateur 
+clique sur l'image il place un marqueur. Cela permet, en plaçant plusieurs marqueurs, de délimité un objet. Lorsque le premier
+marqueur a la même position que le dernier, le contour est terminé et l'utilisateur est invité à donner un label à l'objet
+qu'il vient de délimiter.

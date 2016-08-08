@@ -12,16 +12,18 @@
 \subsection{Objectif}
 %interface
 Le but de cette seconde application est de pouvoir modifier un environnement d'une pièce intérieur au travers d'une interface
-simple et intuitive. Pour cela, nous allons dans un premier temps récupérer un nuage de point d'une pièce intérieur. Puis à partir
+simple et intuitive. 
+Pour cela, nous allons dans un premier temps récupérer un nuage de point d'une pièce intérieur. Puis à partir
 de ce nuage de point, nous allons segmenter la pièce afin de pouvoir détecter des objets à l'intérieur de celle-ci.
 L'utilisateur doit ensuite sélectionner un objet, ce qui déclenchera l'apparition d'une liste contenant un ensemble de modèle 3D
 d'objet équivalant à celui sélectionné. L'utilisateur n'a plus qu'à sélectionner l'objet qui lui convient dans la liste
 afin de l'ajouté dans un autre environnement 3D présent dans l'application.\\
 
-Lors de ce scénario, nous pouvons voir qu'il y a deux grande étape qu'il faudra réaliser dans l'application. Tout d'abord il faut 
+Lors de ce scénario, nous pouvons voir qu'il y a deux grandes étapes qu'il faudra réaliser dans l'application. Tout d'abord il faut 
 segmenter le nuage de point de la pièce dans le but de détecter des objets. Puis il faut reconnaître les objets détectés afin
 d'afficher la bonne liste d'objet 3D. Nous avons décidé, pour faciliter le développement, de laissé l'utilisateur sélectionner
 l'objet qu'il souhaite dans le nuage de point afin de ne pas avoir à développer la détection d'objet dans le nuage de point.
+Pour cela nous nous inspirons des travaux de T. Shao et al\cite{interactiveSeg} et de J. Xiao et al\cite{interactionSeg2}.
 Il nous reste donc à reconnaitre l'objet sélectionner par l'utilisateur.
 
 \subsection{Création de la base d'apprentissage}
