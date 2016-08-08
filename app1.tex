@@ -43,10 +43,9 @@ l'application ReconstructMe\footnote{http://reconstructme.net} qui est une appli
 3D complet à partir de données fournit par plusieurs images provenant d'une caméra 3D. Comme pour cette application, j'ai
 décidé de laisser la possibilité à l'utilisateur de changer les seuils en fonction de sont besoin.\\
 
-%TODO mettre une image délimitant le corps humain avec des seuils
 \begin{figure}[!ht]
   \begin{center}
-    \includegraphics[width=5cm]{image/wait.png}
+    \includegraphics[width=8cm]{image/seuil1.PNG}
     \caption{Résultat d'une segmentation par seuillage}
     \label{fig:seuillage}
   \end{center}
@@ -59,13 +58,13 @@ qui permet de supprimer les points supposé être du bruit. Pour cela cette clas
 voisinnage et si cette moyenne est trop élevé, elle supprime le point en question.\\
 
 %TODO mettre une image délimitant le corps humain avec des seuils et avec la suppression du bruit
-\begin{figure}[!ht]
-  \begin{center}
-    \includegraphics[width=5cm]{image/wait.png}
-    \caption{Résultat d'une segmentation par seuillage avec suppression du bruit}
-    \label{fig:seuillageOutlier}
-  \end{center}
-\end{figure}
+% \begin{figure}[!ht]
+%   \begin{center}
+%     \includegraphics[width=5cm]{image/wait.png}
+%     \caption{Résultat d'une segmentation par seuillage avec suppression du bruit}
+%     \label{fig:seuillageOutlier}
+%   \end{center}
+% \end{figure}
 
 Pour la suite des traitements que nous souhaitons réalisé, il est préférable d'avoir un minimum d'information et de ne garder
 que ce qui est pertinant. Le corps humain que nous avons réussi à délimité comporte encore beaucoup trop de données. Le nombre
@@ -98,16 +97,17 @@ maillage que nous avons construit précédemment. A chaque fois qu'un point est 
 additionner la distance euclidienne entre ce point et le précédent pour obtenir un résultat final correspondant à la distance 
 géodésique.\\
 
-%TODO ajout d'une image d'un corps humain avec un chemin ?
 \begin{figure}[!ht]
   \begin{center}
-    \includegraphics[width=5cm]{image/wait.png}
-    \caption{Exemplre de chemin parcouru par l'algorithme de calcul de la distance géodésique pour un point}
+    \includegraphics[width=5cm]{image/cheminGeodesique.PNG}
+    \caption{Exemple de chemin parcouru par l'algorithme de calcul de la distance géodésique pour un point.
+    Le point vert correspond au centre de gravité du corps, les points rouge sont les noeuds du chemin et le point 
+    orange est le point d'arrivé. Les chiffres jaune sont les distances pour allez d'un noeud à l'autre et les chiffres
+    rouge est la distance géodésique au noeud correspondant.}
     \label{fig:cheminGeodesique}
   \end{center}
 \end{figure}
 
-%TODO refaire les images
 \begin{figure}[!ht]
   \begin{center}
     \includegraphics[width=6.5cm]{image/geodesic1.PNG}
@@ -232,6 +232,7 @@ de moment d'inertie de S. Ushakov disponible dans PCL pour déterminer l'orienta
     \label{tab:modelMatching}
   \end{center}
 \end{figure}
+\newpage
 
 Nous pouvons voir sur les résultats de la correspondance de modéle qu'il y a deux problèmes importants. Le premier problème est celui de l'orientation
 de certain modèle 3D. Dans la majorité des tests que nous avons effectué, il y a au moins deux axes sur lequels l'orientation est la bonne. La méthode 
