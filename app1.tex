@@ -35,10 +35,10 @@ serviront dans la second application qui est le but premier de ce stage.
 %finalement utilisation de la Kinect pour la delimitation
 Durant cette première phase nous travaillons sur un nuage de point et non sur les informations de l'image de profondeur.
 Comme nous l'avons dit précédemment, l'ensemble des informations n'est pas pértinente pour les traitements que nous souhaitons
-réaliser. Dans cette première application il nous faut dabord supprimer l'ensemble des informations qui ne se rapporte pas 
-au corps humain. La première solution que j'ai utilisé et qui était la plus simple a été de mettre deux seuil afin de 
-supprimer les informations qui sont au-dessus d'un certain seuil ainsi que les informations qui sont en-dessous d'un second
-seuil. Ces seuils sont les distances, en mètre, dans lequel l'utilisateur doit se trouver. Cette méthode est utilisé dans 
+réaliser. La première étape dans la réalisation de cette application est de supprimer l'ensemble des informations qui ne se rapporte pas 
+au corps humain. La première solution que nous développons consiste à utiliser deux seuils. Les points qui sont plus éloigné que le 
+premier seuil ainsi que les points en dessous du second seuil sont supprimé. 
+Ces seuils sont les distances, en mètre, dans lequel l'utilisateur doit se trouver. Cette méthode est utilisé dans 
 l'application ReconstructMe\footnote{http://reconstructme.net} qui est une application permettant de construire un modèle
 3D complet à partir de données fournit par plusieurs images provenant d'une caméra 3D. Comme pour cette application, j'ai
 décidé de laisser la possibilité à l'utilisateur de changer les seuils en fonction de sont besoin.\\
@@ -52,10 +52,14 @@ décidé de laisser la possibilité à l'utilisateur de changer les seuils en fo
 \end{figure}
 
 Nous pouvons voir sur la Fig. \ref{fig:seuillage} que le seuil permet effectivement de supprimer beaucoup d'information
-correspondant à l'environnement, mais qu'il reste beaucoup de bruit du à la qualité de l'acquisition de la caméra. La librairie
+correspondant à l'environnement, mais qu'il reste beaucoup de bruit du à la qualité de l'acquisition de la caméra ainsi que 
+des objets qui se trouve à la même distance que l'utilisateur. La librairie
 PCL\cite{PCL} nous fournit beaucoup d'outil pour ce genre de problèmatique. Il y a une classe appelé StatisticalOutlierRemoval
 qui permet de supprimer les points supposé être du bruit. Pour cela cette classe calcul la distance moyenne d'un point avec son
-voisinnage et si cette moyenne est trop élevé, elle supprime le point en question.\\
+voisinnage et si cette moyenne est trop élevé, elle supprime le point en question. Cependant, l'utilisation de cette classe ne
+suffit pas à supprimer les objets à la même distance que l'utilisateur, car la densité de point de ces objets leur permet d'avoir
+suffisemment de voisin proche pour avoir une moyenne de distance très petite. Pour pallier à ce problème, nous avons ajouter un
+système de sélection permettant à l'utilisteur de sélectionner les données ne fesant pas partie du corps humain.\\
 
 %TODO mettre une image délimitant le corps humain avec des seuils et avec la suppression du bruit
 % \begin{figure}[!ht]
@@ -72,30 +76,34 @@ de point fournit par la Kinect est très important et très concentré, il est p
 proche les uns les autres. La encore PCL\cite{PCL} peut nous aider avec la classe VoxelGrid. Cette classe crée une grille de
 voxel sur le nuage de point dont la taille est définit par l'utilisateur. L'ensemble des points à l'intérieur d'un voxel sont 
 approximé en un point qui correspond au centroïde du voxel. Grâce à l'ensemble de ces traitements nous ne gardons que l'information 
-essentiel à nos traitement.
+essentiel à nos traitements.
 
 \subsection{Calcule de la distance géodésique}
 Ma première idée pour segmenter le corps humain est d'utiliser la distance géodesique. Y. Liu et al\cite{GIF} montre que la distance
 géodesique pour une même personne quelque soit sa posture est toujours la même pour les points de ces membres. Le seul problème 
 est que plusieurs membres ont la même distance géodésique, on ne peut donc pas associer un membre à une distance directement.
-Cependant, s'il est possible de seuiller le corps et d'en calculer des descripteurs, nous pourrons déterminer quel nuage de point
+Cependant, il est possible de seuiller le corps et de calculer des descripteurs, afin de déterminer quel nuage de point
 correspond à quel membre.\\
 
 Avant de calculer la distance géodésique du corps humain, nous avons besoin de créer un maillage sur le nuage de point. Pour cela
 j'ai repris le principe utilisé pour le descripteur FPFH\cite{FPFH} pour la sélection des voisins. Dans un premier temps je calcule
-la distance euclidienne de chacun des points du nuage de point avec tous les autres. Pour la création du voisinage je considère non
+la distance euclidienne de chacun des points du nuage de point avec tous les autres. Pour la création du voisinage nous considèrons non
 seulement le nombre maximum de point à prendre en compte, mais aussi la distance maximum d'un point avec les autres. Nous avons eu
-plusieurs problème lorsque nous n'avions pas mis la second condition, car lorsque la main de l'utilisateur était trop proche de sa 
-jambe certain point de la main avait des voisins dans la jambe.\\
+de nombreux problèmes lorsque nous n'avions pas mis la second condition, car lorsque la main de l'utilisateur était trop proche de sa 
+jambe certain point de la main avait des voisins dans la jambe. Cette partie de l'algorithme est la plus délicate, car nous ne pourrons
+pas avoir un aussi bon maillage que sur un modèle 3D et la distance géodésique repose sur la qualité du maillage. Pour améliorer la qualité
+de ce maillage nous avons créé deux paramètres que l'utilisateur peux modifier. Le premier paramètre est le nombre de voisin d'un point et
+le second est la distance euclidienne maximal entre les voisins.\\
 
 %TODO voir si on met des exemples de maillage defectueux 
 
 A cette étape de l'algorithme nous avons donc un maillage et les distances euclidiennes de chaque point avec son voisinnage. Pour calculer
 la distance géodésique du centroïde du nage de point avec chaque point nous allons utilisé l'algorithme de Dijkstra\cite{dijkstra}.
 Il faut donc trouver le plus court chemin du centroïde jusqu'au point dont on veut calculer la distance géodésique en passant par le
-maillage que nous avons construit précédemment. A chaque fois qu'un point est ajouté au chemin emprunté par l'algorithme il faut 
+maillage que nous avons construit précédemment. Les valeurs prisent en compte entre chaque point dans l'algorithme de Dijkstra seront
+les distances euclidienne entre les points. A chaque fois qu'un point est ajouté au chemin emprunté par l'algorithme il faut 
 additionner la distance euclidienne entre ce point et le précédent pour obtenir un résultat final correspondant à la distance 
-géodésique.\\
+géodésique entre le centroïde et le point dont on cherche la distance.\\
 
 \begin{figure}[!ht]
   \begin{center}
@@ -121,9 +129,10 @@ géodésique.\\
 Sur les images de la Fig. \ref{fig:geodesique} on peut voir que la distance géodésique n'est pas aussi précise qu'on le souhaiterait.
 Dans la première image on voit que la distance géodésique n'est pas la même sur le bras gauche et sur le bras droit. Cette imprécision
 vient de la qualité du maillage, certains points ne passent pas par le corps et traverse dans le vide du ventre au bras, ce qui réduit
-la distance géodésique au niveau des mains. Dans la second image, on voit que la position du centroïde est très importante, la position
+la distance géodésique au niveau des mains. Dans la second image, on voit que la position du centroïde est très importante. La position
 du centroïde change en fonction de ce que l'on voit du corps humain, ce qui modifie également la distance géodésique. Un simple seuillage
-n'est donc pas suffisant pour segmenter le corps humain.
+n'est donc pas suffisant pour segmenter le corps humain, car de trop nombreux paramètres interviennent dans le calcul de la distance géodésique,
+y compris la physionomie de l'utilisateur.
 
 \subsection{Segmentation du corps humain}
 %recherche du point le plus éloigné puis suppression d'un groupe de point ....
@@ -132,8 +141,9 @@ Malgrès un léger manque de précision de la par du calcul de la distance géod
 méthode de segmentation qui ne prend pas en compte cette imprécision. Le principe de cette segmentation est de détecter le
 membre le plus éloigné puis de le supprimer dans la recherche des autres membres. Pour cela, notre algorithme recherche le point
 dont la distance géodésique est la plus grande et forme une zone autour de ce point. Cette zone a un rayon prédéfini qui sera le 
-même pour chaque membre. Elle sera enregistré en mémoire et les points de cette zone seront supprimé du nuage de point du corps humain dans
-lequel nous effectuons notre recherche.\\
+même pour chaque membre. Les points à l'intérieur de cette zone seront enregistré et sont concidéré comme fesant partie d'un 
+même membre. Ils seront ensuite supprimer du nuage de point du corps humain, afin de ne pas être pris en compte dans les 
+étape suivante.\\
 
 \begin{figure}[!ht]
   \begin{center}
@@ -143,21 +153,27 @@ lequel nous effectuons notre recherche.\\
     \includegraphics[width=3cm]{image/humanHandL.png}
     \caption{Premières étape de l'algorithme de segmentation du corps humain. Le point vert correspond au point le plus éloigné et la zone rouge
     l'ensemble des points concidérés comme fesant partie du membre.}
-    \label{fig:geodesique}
+    \label{fig:segmentation}
   \end{center}
 \end{figure}
 
-Cette méthode est efficace pour reconnaitre le bout des membres et la tête, mais le reste des parties du corps est moins précis, notamment au niveau
-des épaules où le point de la zone est très instable et peut se retrouver au niveau du torse. De plus la taille des zones dépend de la 
-physionomie de la personne devant la Kinect. 
-%Nous décidons donc de nous concentrer sur les parties que nous arrivons à détecter pour la 
-%suite de nos traitements, c'est-à-dire les mains et la tête.
+Y. Liu et al\cite{GIF} proposent une amélioration de leur méthode basé sur le superpixel SLIC\cite{SLIC}. Le but de l'utilisation du superpixel
+SLIC est de diminuer le nombre de point pris en compte lors des calculs du plus court chemin de l'algorithme de Dijkstra afin de diminuer le 
+temps de calcul, mais aussi d'améliorer la segmentation du corps humain. Le seul paramètre de l'algorithme SLIC est le nombre de classe à 
+retrouver dans l'image. Cette algorithme s'effectue en général dans l'espace colorimètrique LAB. La méthode de Y. Liu et al\cite{GIF} quant à
+elle, utilise les coordonné x, y et z. Après avoir testé l'utilisation des superpixels, nous remarquons que nous obtenons plus rapidement le résultat,
+mais que celui-ci n'est pas meilleur que celui que nous obtenions précédemment.\\
+
+%TODO mettre une image avec les superpixel en rouge
+%TODO faire une comparaison entre les résultats obtenu avec et sans les superpixel
+
+Cette méthode est efficace pour reconnaitre les extrémités du corps humaine comme les mains, les pieds et la tête, mais le reste des parties du corps 
+est moins précis, notamment au niveau des épaules où le point de la zone est très instable et peut se retrouver au niveau du torse. De plus la taille 
+des zones dépend de la physionomie de la personne devant la Kinect. 
 
 %\subsection{Calcule de descripteurs}
 %d2
 \subsection{SDK de la Kinect}
-%récuperation du corps de la personne depuis une image kinect -> a partir des info de la kinect -> le mettre plutot dans les travaux réalisé
-%labelisation en fonction de la distance du point avec le joint
 Etant donné que nos résultats pour la segmentation du corps ne sont pas suffisemment précis pour la suite de nos traitements et par faute de
 temps, nous avons décidé d'utiliser les outils fournis avec la Kinect pour continuer le projet. Grâce à la caméra de Microsoft, nous pouvons
 récupérer le squelette de l'utilisateur dont les articulations sont labelisé avec le nom de la partie du corps humain à laquel elle appartient
@@ -175,7 +191,7 @@ récupérer le squelette de l'utilisateur dont les articulations sont labelisé 
 
 Grâce à ce squelette et au nuage de point nous pouvons segmenter le corps humain. Pour cela, pour chaque articulation nous définissons une zone
 dont la taille est variable en fonction de l'articulation. Les points du nuage sont labelisé en fonction de leur distance avec les articulations.
-Donc un point prend le label de l'articulation dont il est le plus proche.
+Donc un point prend le label de l'articulation dont il est le plus proche.\\
 
 \begin{figure}[!ht]
   \begin{center}
@@ -194,13 +210,10 @@ corps, car celle-ci a déjà été réalisé par les outils de la Kinect. Il ne 
 mal labeliser, grâce à la classe StatisticalOutlierRemoval que nous avons vu précédemment.
 
 \subsection{Positionnement}
-%icp, fpfh
-%dire qu'il n'est pas possible d'utiliser la distance geodesic pour le positionnement a cause du temps et qu'on ne peut calculer la distance geodesic
-%sur le mesh de remplacement
 La dernière étape de cette première application est d'échanger le nuage de point d'un membre du corps par un modèle 3D représentant cette même partie
-du corps. Cette partie est très complexe à cause de deux problème majeur. Tout d'abord, le type d'information n'est pas le même. Dans un cas nous avons
+du corps. Cette partie est très complexe à cause de deux problèmes majeurs. Tout d'abord, le type d'information n'est pas le même. Dans un cas nous avons
 un nuage de point dont les points sont très concentrés, mais avec des parties occultés. De l'autre côté, nous avons un modèle 3D avec un nombre de point
-inconnu et donc une concentration de point inconnu, et avec aucune zone occulté si nous prenons en concidération le maillage du modèle. Le second problème
+inconnu et donc une concentration de point inconnu, mais avec aucune zone occulté si nous prenons en concidération le maillage du modèle. Le second problème
 est que le but recherché est de remplacer la partie du corps humain par quelque chose de plus improbable et étonnant comme une partie du corps d'un monstre,
 d'un robot ou d'un corps dont la musculature est différentes.\\
 
@@ -242,8 +255,10 @@ Pourtant dans chacun des cas la translation est juste, nous le vérifions en com
 pris en compte comme étant une main par exemple. Dans le nuage de point, la zone considéré comme étant la main comporte la main et le poignet alors que 
 dans le modèle 3D de la main de monstre le poignet n'est pas présent.\\
 
-La mise en place d'une correspondance entre une nuage de point et un modèle 3D d'une partie du corps n'est pas suffisemment précise. Pour pallier
+Notre méthode serait suffisemment efficace pour remplacer deux nuages de point de membre du corps provenant d'une caméra 3D. On pourrait facilement
+remplacer la tête de deux personnes.
+Mais la mise en place d'une correspondance entre un nuage de point et un modèle 3D d'une partie du corps n'est pas suffisemment précise. Pour pallier
 aux erreurs de l'application, nous avons envisagé de laisser la possibilité à l'utilisateur d'intéragir avec celle-ci. Le plus important est l'orientation
-du modèle et nous savons que en cas d'erreur il faut effectuer une rotation du modèle de 180\degre sur l'un des trois axes. L'utilisateur aurai juste à 
+du modèle et nous savons qu'en cas d'erreur il faut effectuer une rotation du modèle de 180\degre sur l'un des trois axes. L'utilisateur aurai juste à 
 sélectionner l'axe qui ne convient pas et l'application effectuerai la rotation seul. Maintenant que nous avons vu un cas particulier, nous allons pouvoir
 partir sur une application plus généraliste et plus simple en réutilisant ce qui a été vu pour l'application sur le corps humain.  
