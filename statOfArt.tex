@@ -53,8 +53,9 @@ et est trop instable pour que cela marche sur le corps humain qui peut adopter d
 \subsubsection{Corps humain}
 La segmentation du corps humain est un sujet très complexe, car contrairement au objet celui-ci bouge et adopte
 des postures différentes. La méthode la plus souvent utilisé pour résoudre cette problématique est de déterminer
-la posture de l'utilisateur et lorsque cette posture est connu il est facile de déterminer les différentes partie
-du corps. Ces méthodes nécessitent d'avoir une base de connaissance contenant de nombreuses postures qui doivent
+la posture de l'utilisateur, puis de cette posture déterminer les différentes partie du corps à partir de la labelisaiton
+qui doit être réalisé sur la base de connaissance. 
+Ces méthodes nécessitent d'avoir une base de connaissance contenant de nombreuses postures qui doivent
 être segmenter et labelisé avec les différentes parties du corps. J. Shotton et al\cite{kinectSegmentation} ont
 d'abord créé une base d'apprentissage en calculant un descripteur
 et une technique d'apprentissage automatique appelé forêt d'arbres décisionnels\cite{randomDecisionForest}. 
@@ -63,6 +64,7 @@ profondeur. Afin de déterminer quel posture a l'utilisateur, il utilise une car
 de deux pixels, un pixel x et d'un pixel dont l'offset par rapport au pixel x a été définit.
 Lorsque l'utilisateur bouge, le descripteur utilisé précédemment est recalculé sur l'image courante et le résultat 
 est comparé au posture de la base d'apprentissage.\\
+
 \begin{figure}[!ht]
   \begin{center}
     \includegraphics[width=5cm]{image/shotton.png}
@@ -70,9 +72,10 @@ est comparé au posture de la base d'apprentissage.\\
     La croix jaune correspond au pixel à classifier et le cercle rouge correspond au pixel décalé.}
   \end{center}
 \end{figure}
-%La posture ayant une valeur proche du résultat calculé précédemment est la posture de l'utilisateur. 
-%De nombreuses méthode utilise cette solution, mais elle modifie le descripteur
-%utilisé et la technique d'apprentissage automatique comme nous le verrons dans la suite de ce rapport.
+
+La méthode de J. Shotton et al\cite{kinectSegmentation} est efficace pour de nombreuse parties du corps, 
+mais reste instable sur les parties de la main comme le poignet et le centre de la main. Mais cette méthode permet 
+tout de même de déterminer approximativement les parties du corps occulté.\\
 
 Comme pour la méthode précédente B. Yoo et al\cite{RDB} utilisent les images de profondeur pour déterminer
 la posture de l'utilisateur. Cependant, leur descripteur repose sur des caractèristiques plus complexe comme
@@ -91,7 +94,7 @@ des points. Cette orientation est appliqué sur d'autres caratéristiques sensib
 
 \begin{figure}[!ht]
   \begin{center}
-    \includegraphics[width=10cm]{image/geodesic.png}
+    \includegraphics[width=12cm]{image/geodesic.png}
     \caption{Distance géodésique d'un corps humain}
   \end{center}
 \end{figure}
@@ -112,7 +115,7 @@ afin de reconnaître un objet. Ce descripteur fournit de bon résultat lorsque l
 différents.\\
 
 Le descripteur PFH\cite{PFH} (Point Feature Histograms) est un outil permettant de calculer la courbure moyenne d'un voisinage de point en utilisant un histogramme multi-dimensionnel. Le calcul de la courbure et le fait que ce soit une généralisation permet d'être invariant 
-en translation et en rotation, et permet également d'être moins sensible au bruit présent dans le nuage de point. Le voisinage 
+en translation, en rotation et en densité de point, et permet également d'être moins sensible au bruit présent dans le nuage de point. Le voisinage 
 dépend de la distance des points avec le point centrale et il ne peut exceder un certain nombre de voisin 
 (voir Fig. \ref{fig:pfhNeighborhood}).\\
 
@@ -138,13 +141,13 @@ de nouveaux histogrammes à partir des histogramme simplifié précédent (voir 
   \end{center}
 \end{figure}
 
-D. G. Lowe\cite{SIFT} créa un descripteur appelé \og scale-invariant feature transform \fg(SIFT) qui crée
+D. G. Lowe\cite{SIFT} a créé un descripteur appelé \og scale-invariant feature transform \fg(SIFT) qui crée
 des points clés dans une image 2D et calcul des descripteurs sur ces points. Ce descripteur permet entre autre
 de détecter des points clés similaires dans deux images différentes d'une même scène tant que les angles de vue
 sont suffisament petit. Les points clés de ce descripteur sont des zones circulaires positionné sur les extrema 
 dans l'espace des échelles, le facteur d'échelle étant proportionnel à la taille de la zone d'intérêt. Une fois que
 que l'on a trouvé la position des points clé, il faut déterminer leur orientation en calculant le gradient dans le voisinage
-du point clé. Grâce au orientation des voisins des point clé il est possible de créer un histogramme des orientation. Ainsi
+du point clé. Grâce au orientation des voisins des point clé il est possible de créer un histogramme des orientations. Ainsi
 l'orientation du point clé correspond aux pics les plus importants de l'histogramme.
 La construction de ces points clés permets à ceux-ci d'être invariant aux changements d'échelle et aux rotations.
 
@@ -214,8 +217,24 @@ T. Shao et al\cite{interactiveSeg} propose, en plus d'avoir une méthode de segm
 segmentation en impliquant l'utilisateur dans le processus. Ainsi lorsque la segmentation d'une pièce comporte des erreurs, 
 l'utilisateur est amené à rectifier les erreurs de la machine au travers d'une interface.
 Pour cela les auteurs proposent à l'utilisateur de dessiné sur l'objet dont le label est erroné avec la couleur du label 
-qui correspond et l'application change la couleur et le label de l'objet sélectionné. Sur le même principe, J. Xiao et al\cite{interactionSeg2}
+qui correspond et l'application change la couleur et le label de l'objet sélectionné.\\ 
+
+\begin{figure}[!ht]
+  \begin{center}
+    \includegraphics[width=15cm]{image/recoInteractive1.png}
+    \caption{Résultat de la reconnaissance intéractive de T. Shao et al\cite{interactiveSeg}}
+  \end{center}
+\end{figure}
+
+Sur le même principe, J. Xiao et al\cite{interactionSeg2}
 ont créé un système d'interaction afin de facilité la création de leur base d'apprentissage. Pour cela, lorsque l'utilisateur 
 clique sur l'image il place un marqueur. Cela permet, en plaçant plusieurs marqueurs, de délimité un objet. Lorsque le premier
 marqueur a la même position que le dernier, le contour est terminé et l'utilisateur est invité à donner un label à l'objet
 qu'il vient de délimiter.
+
+\begin{figure}[!ht]
+  \begin{center}
+    \includegraphics[width=5cm]{image/segInteractive1.png}
+    \caption{Résultat de la sélection intéractive de J. Xiao et al\cite{interactionSeg2}}
+  \end{center}
+\end{figure}
