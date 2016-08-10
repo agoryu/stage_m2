@@ -11,18 +11,97 @@
 %url
 \usepackage{hyperref}
 
+\usepackage{color}
+\usepackage{multicol}
+\usepackage{setspace}
+
+\definecolor{mygray}{RGB}{100,100,100}
+
+\hypersetup{
+       backref=true,                           % Permet d'ajouter des liens dans
+       pagebackref=true,                       % les bibliographies
+       hyperindex=true,                        % Ajoute des liens dans les index.
+       colorlinks=true,                        % Colorise les liens.
+       breaklinks=true,                        % Permet le retour à la ligne dans les liens trop longs.
+       urlcolor= blue,                         % Couleur des hyperliens.
+       linkcolor= black,                        % Couleur des liens internes.
+       bookmarks=true,                         % Créé des signets pour Acrobat.
+       bookmarksopen=true,                     % Si les signets Acrobat sont créés,
+                                               % les afficher complètement.
+       pdftitle={Approche sémantique de segmentation et de recherche interactive par le contenu issu d’une caméra de profondeur},  % Titre du document.
+                                               % Informations apparaissant dans
+       pdfauthor={Elliot Vanegue},                      % dans les informations du document
+       pdfsubject={Stage M2}           % sous Acrobat.
+    }
+
 \usepackage{array,multirow,makecell}
 \setcellgapes{1pt}
 \makegapedcells
 \newcolumntype{C}[1]{>{\centering\arraybackslash }b{#1}}
 
-\title{Approche sémantique de segmentation et de recherche interactive par le contenu issu d’une caméra de profondeur}
-\author{Elliot Vanegue}
+%\title{Approche sémantique de segmentation et de recherche interactive par le contenu issu d’une caméra de profondeur}
+%\author{Elliot Vanegue}
 
 \begin{document}
 
-\maketitle
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\vspace{1cm}
+
+\begin{multicols}{2}  
+
+    \textbf{\large Auteur : }
+    \begin{itemize}
+      \item Elliot VANEGUE
+    \end{itemize}
+    \ \\
+    
+    \textbf{\large Encadrants:}
+    \begin{itemize}
+      \item Hazem WANNOUS
+      \item Jean-Philippe VANDEBORRE 
+    \end{itemize}
+
+\end{multicols}
+
+\vspace{4cm}
+
+ \begin{flushright}
+  \begin{spacing}{1.6}
+    \textbf{
+      {\LARGE Présentation du stage de fin d'étude du master IVI}
+    }
+  \end{spacing}
+  \hrule
+  \vspace{0.2cm}
+  \textit{
+    {\Large\textcolor{mygray}{Approche sémantique de segmentation et de recherche interactive par le contenu issu d’une caméra de profondeur}}
+  }
+\end{flushright}
+
+\vspace{3.5cm}
+
+\begin{center}
+  \includegraphics[width=4.5cm]{image/logoLILLE1.png}
+  %\hfill
+  % logo équipe
+  \hspace{1.5cm}
+  \includegraphics[width=5.5cm]{image/logoCRIStAL.png}
+  \vspace{3.5cm}
+
+
+  {\large\textbf{Mars 2016 à Aout 2016}}
+\end{center}
+
+
+
 \newpage
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%\maketitle
+%\newpage
 
 \section*{Remerciement}
 \newpage
@@ -76,13 +155,9 @@ appelé SVM.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Conclusion}
 \input{conclusion.tex}
-%resultat des deux projets
-%ce que j'ai utilisé
-%ce que j'ai appris
-%comment me servir de mon stage pour après mes études
 
 \newpage
-\bibliographystyle{ieeetr} % or try abbrvnat or unsrtnat or plainnat
+\bibliographystyle{ieeetr}
 \bibliography{biblio}
 
 \end{document}

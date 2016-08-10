@@ -16,9 +16,10 @@ la tête si nous ne savons pas délimiter les parties du corps.
   \begin{center}
     \includegraphics[width=8cm]{image/segmentation.png}
     \includegraphics[width=5cm]{image/bodySegmentation.png}
-    \caption[The LOF caption]{Résultat attendu pour la segmentation d'un environnement intérieur\footnote{source : \url{http://kos.informatik.uni-osnabrueck.de/icar2013/}} et du corps humain}
+    \caption[The LOF caption]{Résultat attendu pour la segmentation d'un environnement intérieur\footnotemark et du corps humain}
   \end{center}
 \end{figure}
+\footnotetext{source : \url{http://kos.informatik.uni-osnabrueck.de/icar2013/}}
  
 \subsubsection{Segmentation d'un environnement intérieur}
 De nombreux travaux ont été réalisés dans la segmentation d'image 2D avant que les caméras 3D ne soient
@@ -67,7 +68,7 @@ est comparé au posture de la base d'apprentissage.\\
 
 \begin{figure}[!ht]
   \begin{center}
-    \includegraphics[width=5cm]{image/shotton.png}
+    \includegraphics[width=6cm]{image/shotton.png}
     \caption{Deux exemples de caractèristique du descripteur de J. Shotton et al\cite{kinectSegmentation}. 
     La croix jaune correspond au pixel à classifier et le cercle rouge correspond au pixel décalé.}
   \end{center}
@@ -168,9 +169,10 @@ de la valeur recherchée nous fournit la solution à notre problème.\\
 \begin{figure}[!ht]
   \begin{center}
     \includegraphics[width=7cm]{image/randomForest.png}
-    \caption{Exemple d'arbre de décision}
+    \caption[The LOF caption]{Exemple d'arbre de décision\footnotemark }
   \end{center}
 \end{figure}
+\footnotetext{source : \url{https://scaron.info/doc/intro-arbres-decision/}}
 
 Les machines à vecteurs de support\cite{SVM}, quant à eux, sont une classe d'algorithmes d'apprentissages supervisés permettant la
 résolution de 
@@ -191,9 +193,15 @@ afin d'avoir un vecteur de même taille pour toutes les images, mais cela néces
 avec l'ensemble des caractèristiques des images traitées. Nous obtenons ainsi un nouveau descripteur sous la forme d'un
 histogramme dont ça taille est égale au nombre de caractèristique différente de chaque classe.
 
+\begin{figure}[!ht]
+  \begin{center}
+    \includegraphics[width=8cm]{image/bagofwords.png}
+    \caption[The LOF caption]{Schéma du fonctionnement de l'algorithme du bag of visual words\footnotemark }
+  \end{center}
+\end{figure}
+\footnotetext{source : \url{http://www.ifp.illinois.edu/~yuhuang/sceneclassification.html}}
+
 \subsection{Positionnement de modèle}
-%moment d'inertie pour la position des membres
-%ICP
 Afin de réaliser la correspondance entre deux modèles P. J. Besl et al\cite{ICP} développe l'algorithme \og iterative closest point \fg (ICP).
 Cet algorithme recherche l'ensemble des translations et rotations nécessaires à la mise en correspondance de deux modèles similaires. Pour cela,
 celui-ci fonctionne en quatre étapes :
@@ -206,7 +214,7 @@ celui-ci fonctionne en quatre étapes :
   \item Itérer jusqu'à ce qu'on ait atteint la condition de fin fixée par l'utilisateur.
 \end{itemize}
 \ \\
-Dans la bibliothèque PCL\cite{PCL}, S. Ushakov implémente une classe basée sur le moment d'inertie\footnote{http://pointclouds.org/documentation/tutorials/moment\_of\_inertia.php\#moment-of-inertia}
+Dans la bibliothèque PCL\cite{PCL}, S. Ushakov implémente une classe basée sur le moment d'inertie\footnote{\url{http://pointclouds.org/documentation/tutorials/moment\_of\_inertia.php\#moment-of-inertia}}
 permettant de déterminer les axes principaux d'un nuage de points. Pour cela, cette classe calcule la matrice de covariance du nuage de points et 
 en extrait les vecteurs propres. Le plus grand vecteur propre est considéré comme étant l'axe X et le plus petit devient l'axe Z, ce qui permet 
 d'obtenir un système de coordonnées dans un référentiel local à l'objet.\\   

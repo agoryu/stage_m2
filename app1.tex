@@ -1,20 +1,3 @@
-%\subsection{Récupération de l'image du corps humain}
-%SDK de la kinect avec skelette
-%\subsection{Préparation de l'image}
-%suppression du bruit et diminution du nombre de point -> pcl
-%\subsection{Segmentation du corps humain}
-%distance geodesic avec dikjstra -> pb nombre de voisin
-%superpixel
-%\subsection{Reconnaissance des parties du corps}
-%descripteur D2 avec model 3D
-%FPFH
-%\subsection{Appariement d'un model 3D}
-%scale à partir d'une bounding box
-%ICP
-%moment d'inertie
-%\subsection{Résultat des expérimentations}
-%montrer plusieurs images de la segmentation et montrer ce qui ne convient pas
-%dire que les méthode utilisé seront utilisé dans la suite du projet 
 \subsection{Objectif}
 %on cherche a ne pas utiliser la kinect
 Cette première application a plusieurs objectifs. Dans un premier temps, nous souhaitons réaliser 
@@ -26,20 +9,13 @@ mais ayant une forme différente. Cette première partie du stage me permet surt
 serviront dans la second application qui est le but premier de ce stage.
 
 \subsection{Délimitation du corps humain et minimisation de la quantité de donnée}
-%prétraitement
-%utilisation voxel pour réduire le nombre de point
-%utilisation d'outils pour supprimer les outlier
-%utilisation de threshold
-%suppression d'objet à la main
-%utilisateur peut les modifier lui meme
-%finalement utilisation de la Kinect pour la delimitation
 Durant cette première phase nous travaillons sur un nuage de point et non sur les informations de l'image de profondeur.
 Comme nous l'avons dit précédemment, l'ensemble des informations n'est pas pértinente pour les traitements que nous souhaitons
 réaliser. La première étape dans la réalisation de cette application est de supprimer l'ensemble des informations qui ne se rapporte pas 
 au corps humain. La première solution que nous développons consiste à utiliser deux seuils. Les points qui sont plus éloigné que le 
 premier seuil ainsi que les points en dessous du second seuil sont supprimé. 
 Ces seuils sont les distances, en mètre, dans lequel l'utilisateur doit se trouver. Cette méthode est utilisé dans 
-l'application ReconstructMe\footnote{http://reconstructme.net} qui est une application permettant de construire un modèle
+l'application ReconstructMe\footnote{\url{http://reconstructme.net}} qui est une application permettant de construire un modèle
 3D complet à partir de données fournit par plusieurs images provenant d'une caméra 3D. Comme pour cette application, j'ai
 décidé de laisser la possibilité à l'utilisateur de changer les seuils en fonction de sont besoin.\\
 
@@ -60,15 +36,6 @@ voisinnage et si cette moyenne est trop élevé, elle supprime le point en quest
 suffit pas à supprimer les objets à la même distance que l'utilisateur, car la densité de point de ces objets leur permet d'avoir
 suffisemment de voisin proche pour avoir une moyenne de distance très petite. Pour pallier à ce problème, nous avons ajouter un
 système de sélection permettant à l'utilisteur de sélectionner les données ne fesant pas partie du corps humain.\\
-
-%TODO mettre une image délimitant le corps humain avec des seuils et avec la suppression du bruit
-% \begin{figure}[!ht]
-%   \begin{center}
-%     \includegraphics[width=5cm]{image/wait.png}
-%     \caption{Résultat d'une segmentation par seuillage avec suppression du bruit}
-%     \label{fig:seuillageOutlier}
-%   \end{center}
-% \end{figure}
 
 Pour la suite des traitements que nous souhaitons réalisé, il est préférable d'avoir un minimum d'information et de ne garder
 que ce qui est pertinant. Le corps humain que nous avons réussi à délimité comporte encore beaucoup trop de données. Le nombre
@@ -171,8 +138,6 @@ Cette méthode est efficace pour reconnaitre les extrémités du corps humaine c
 est moins précis, notamment au niveau des épaules où le point de la zone est très instable et peut se retrouver au niveau du torse. De plus la taille 
 des zones dépend de la physionomie de la personne devant la Kinect. 
 
-%\subsection{Calcule de descripteurs}
-%d2
 \subsection{SDK de la Kinect}
 Etant donné que nos résultats pour la segmentation du corps ne sont pas suffisemment précis pour la suite de nos traitements et par faute de
 temps, nous avons décidé d'utiliser les outils fournis avec la Kinect pour continuer le projet. Grâce à la caméra de Microsoft, nous pouvons
@@ -184,10 +149,11 @@ récupérer le squelette de l'utilisateur dont les articulations sont labelisé 
   \begin{center}
     \includegraphics[width=2cm]{image/kinectSkeleton.png} 
     \includegraphics[width=8cm]{image/seg1.PNG}
-    \caption{a) Squelette fournit par la caméra Kinect et b) séparation du corps humain de l'environnement}
+    \caption[The LOF caption]{a) Squelette fournit par la caméra Kinect\footnotemark et b) séparation du corps humain de l'environnement}
     \label{fig:kinect}
   \end{center}
 \end{figure}
+\footnotetext{source : \url{http://hdimagelib.com/standing+person+sideways?image=356490844}}
 
 Grâce à ce squelette et au nuage de point nous pouvons segmenter le corps humain. Pour cela, pour chaque articulation nous définissons une zone
 dont la taille est variable en fonction de l'articulation. Les points du nuage sont labelisé en fonction de leur distance avec les articulations.
