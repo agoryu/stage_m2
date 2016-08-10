@@ -4,18 +4,42 @@ des interfaces permettant de faciliter la tâche des professions artistiques en 
 des objets du monde réelle dans un environement virtuel. Dans la première application sur le corps humain,
 nous avons cherché à récupérer les informations du corps de la personne en face de la caméra et de segmenter
 ces informations. Les informations ainsi segmenté pouvait ensuite être remplacé par l'utilisateur afin de 
-pouvoir mettre des éléments virtuel sur un corps venant du monde réel.\\
+pouvoir mettre des éléments virtuel sur un corps venant du monde réel. Pour réalisé ce projet nous avons 
+utilisé les algorithme fournis dans le SDK de la Kinect pour filtrer les données. Etant donné la différence
+des données entre le nuage de points que nous récupérons de notre caméra et les modèle 3D que nous utilisons,
+nous avons privilégié une méthode basé sur l'utilisation des caractèristiques de la boîte englobante pour
+déterminer la position et l'orientation du nuage de points de la partie du corps à remplacer. Ces informations
+nous permettent ainsi de transformer le modèle 3D pour que celui-ci soit exactement à la même position que
+l'ancien nuage de points. Le problème de notre méthode est q'une boîte englobante est une représentation 
+beaucoup général pour une forme et donc l'orientation du nouveau modèle possède souvent une erreur de 90\degre
+sur l'un des trois axes de la boîte. Pour l'application final, nous avons pensé proposer à l'utilisateur de 
+corriger ce problème en sélectionnant l'axes qui fait défaut et l'application de chargerait d'appliquer la
+bonne rotation au modèle.\\
 
-La seconde applications avait pour but de prendre une pièce virtuelle dans laquel nous pouvons rajouté des éléments 
-du monde réel. Ces objets du monde réel vienne du scanne d'une pièce. La encore le processus nécessitait la segmentation 
-des données afin de détecter les objets présents dans la pièce réel.
+La seconde applications avait pour but de prendre un environnement virtuelle dans laquel nous pouvons rajouté des éléments 
+du monde réel. Ces objets du monde réel vienne du scanne d'une pièce via la caméra Kinect. La encore le processus nécessitait 
+la segmentation des données afin de détecter les objets présents dans la pièce réel. La segmentation est réalisé 
+par l'utilisateur qui doit sélectionné l'objet qu'il veut importer dans le monde virtuelle. Pour que l'application
+reconnaisse l'objet qui a été sélectionné, nous avons utilisé un algorithme d'apprentissage automatique, les SVM,
+avec le descripteur du sac de mot formé à partir du descripteur FPFH.\\
+%TODO ajout des résultat de la méthode.
 
-\subsection{Evaluation des solutions}
-Les deux applications que j'ai développé n'ont pas aboutit au résultat attendu. Le premier projet n'a pas été terminé
-par faute de temps. 
+Lors de ce stage j'ai eu l'occasion de perfectionner les connaissances que j'avais acquise lors de mon master.
+Les notions que j'avais vu de reconnaissance d'objet m'ont évidemment était très utile durant le stage, mais 
+beaucoup de concept n'ont pas été approfondie durant les cours par manque de temps. J'ai pu approdonfir mes 
+connaissance concernant les algorithmes d'apprentissage automatique et j'ai pu voir le fonctionnement de plusieurs
+descripteur.\\ 
 
+Le plus compliqué lors de ce stage a été de comprendre et tester des méthodes proposé dans des publications scientifique.
+Certaine méthode n'était pas très complexe est facile à tester, mais de nombreuses publications se reposaient sur des connaissances
+mathématique qui n'ont pas été vu durant mon cursus scolaire. Mais cette expérience m'a appris à réaliser un état de l'art des 
+solutions existantes sur un sujet très spécifique et à tester les méthodes proposé dans la littérature. Ma seconde difficulté
+lors de ce stage est que le sujet était assez vaste et qu'il ne fallait se perdre dans des méthodes qui s'éloigné du sujet.
+Cela m'a appris à rester concentrer sur l'objectif principale en prévoyant et en organisant les étapes du projet.\\ 
 
-Le problème sur l'orientation du modèle 3D a pris beaucoup de temps et très peu de solution à ce
-type de problème ont été envisagé dans la littérature. 
-\subsection{Bénéfice de ce stage}
-\subsection{Perspective}
+Ce stage m'a fait redécouvrir l'environnement de la recherche dans lequel je souhaitais partir. Bien que j'ai réussi à surmonter
+les difficultées que j'ai rencontré durant ce stage, il m'a permis de voir que l'environnement ne me convenait pas. La partie 
+état de l'art, bien que très intéressante, a été assez difficile à réaliser. De plus, j'ai ressenti une certaine frustration
+concernant les résultats du projet. J'ai passé énormément de temps à tester des méthodes difficile à implémenter et j'obtenais
+que rarement des résultats intéressant pour mon projet. Ce stage m'a permis de comprendre que le monde de l'entreprise me
+convenait mieux.
