@@ -241,6 +241,9 @@ sont prédéfinis pour chaque membre, donc l'utilisateur ne peut pas sélectionn
 
 L'un des aspects sur lequel nous avons réfléchi était la construction d'un modèle complet, sans partie occulté, du corps
 humain. Cette étape est réalisable avec un algorithme fourni dans le SDK de la Kinect qui est le \og kinect fusion \fg\cite{
-KinectFusion}. Cette extension permettrait, en plus d'une simple visualisation de l'utilisateur avec une partie du corps
+KinectFusion}. Actuellement, nous mélangeons un nuage de point fourni par la Kinect, avec le dos de la personne occulté, et 
+des modèles 3D dont on ne prend que les points. Même si le tout reste visuellement cohérent, on peut voir la différence entre
+le nuage de point et le modèle 3D.
+Cette extension permettrait, en plus d'une simple visualisation de l'utilisateur avec une partie du corps
 différente, de reconstruire un maillage complet avec le corps de l'utilisateur. Ce nouveau modèle 3D pourrait alors être
 directement utilisé dans un film d'animation ou un jeu vidéo.
