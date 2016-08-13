@@ -107,24 +107,24 @@
 \newpage
 
 \begin{abstract}
-Lors de ce stage, je vais réalisé deux applications dont le but est de modifier un environnement
-virutelle grâce à des éléments du mon réel. Pour cela, je me sers de la caméra 3D Kinect v2
-pour récupérer les informations du monde réel sous forme de nuage de points. Grâce à ces données
-nous pouvons détecter des objets afin de les matérialiser dans un environnement virtuelle.
+Lors de ce stage, je vais réaliser deux applications dont le but est de modifier un environnement
+virutel grâce à des éléments du monde réel. Pour cela, je me sers de la caméra 3D Kinect v2
+pour récupérer les informations du monde réel sous forme de nuage de points. Grâce à ces données,
+nous pouvons détecter des objets afin de les matérialiser dans un environnement virtuel.
 Ce projet vise à faciliter les outils de designer afin de leur permettre d'importer des objets
-du monde réel dans leur projet pour éviter de remodéliser des objets existants. La première 
-application récupère le corps de l'utilisateur dans le but de pouvoir en modifier certaine
-partie. La seconde application permet de scanner un environnement intérieur pour ensuite 
-sélectionné les objets que l'on souhaite ajouter dans un environnement 3D. Les deux applications
-passe par une étape de segmentation, puis de détection et de reconnaissance d'objet. Les parties
-les plus complexe à réaliser à l'heure actuel sont pris en charge par l'utilisateur au travers 
+du monde réel dans leur projet, pour éviter de remodéliser des objets existants. La première 
+application récupère le corps de l'utilisateur dans le but de pouvoir en modifier certaines
+parties. La seconde application permet de scanner un environnement intérieur pour ensuite 
+sélectionner les objets que l'on souhaite ajouter dans un environnement 3D. Les deux applications
+passent par une étape de segmentation, puis de détection et de reconnaissance d'objet. Les parties
+les plus complexes à réaliser à l'heure actuelle sont prises en charge par l'utilisateur au travers 
 d'une interface que j'ai construit pour ces deux projets.\\
 
-Pour ces projets j'ai utilisé les outils fournis dans le SDK de la Kinect, ainsi qu'une bibliothèque
-pour le traitement de nuage de poing appelé PCL. Mes travaux se sont surtout concentré sur la reconnaissance
-d'objet notamment dans la seconde application. Pour cette étape j'ai utilisé un descripteur appelé FPFH dans 
-un sac de mot pour calculer un descripteur uniformisé et invariant en translation, rotation et changement
-d'échelle. Afin de créer une base de connaissance j'ai utilisé un algorithme d'apprentissage automatique
+Pour ces projets, j'ai utilisé les outils fournis dans le SDK de la Kinect, ainsi qu'une bibliothèque
+pour le traitement de nuage de points, appelée PCL. Mes travaux se sont surtout concentrés sur la reconnaissance
+d'objet, notamment dans la seconde application. Pour cette étape, j'ai utilisé un descripteur appelé FPFH dans 
+un bag of words, pour calculer un descripteur uniformisé et invariant en translation, rotation et changement
+d'échelle. Afin de créer une base de connaissances, j'ai utilisé un algorithme d'apprentissage automatique
 appelé SVM.
 \end{abstract}
 \newpage

@@ -227,23 +227,23 @@ du modèle, et nous savons qu'en cas d'erreur, il faut effectuer une rotation du
 sélectionner l'axe qui ne convient pas et l'application effectuerait la rotation seule. Maintenant que nous avons vu un cas particulier, nous allons pouvoir
 partir sur une application plus généraliste et plus simple en réutilisant ce qui a été vu pour l'application sur le corps humain.  
 
-\subsection{Travaux futures et applications}
-L'application que nous avons développé est vraiment la base et de nombreuses extensions peuvent être ajouté.
+\subsection{Travaux futurs et applications}
+L'application que nous avons développée est vraiment la base, et de nombreuses extensions peuvent être ajoutées.
 L'une d'entre elles est la possibilité de bouger la partie du corps modifié en temps réel. Pour l'instant, nous filmons
 la scène et l'utilisateur doit mettre en pause l'acquisition lorsqu'il souhaite modifier une partie du corps. Lorsque le
 processus est terminé, il serait intéressant de laisser la possibilité à l'utilisateur de relancer l'acquisition afin de
-voir la nouvelle partie du corps se deplacer. La possibilité de changer des parties du corps en temps réel durant 
-l'acquisition serait un véritable plus, mais la difficulté à optimiser les calcules serait trop important. Sur l'application
-actuel, nous sommes à 5 à 10s de calcul pour le remplacement d'une partie du corps.\\
+voir la nouvelle partie du corps se déplacer. La possibilité de changer des parties du corps en temps réel durant 
+l'acquisition, serait un véritable plus, mais la difficulté à optimiser les calculs serait trop importante. Sur l'application
+actuelle, nous sommes à 5 à 10s de calcul pour le remplacement d'une partie du corps.\\
 
 Nous n'avons pas non plus eu le temps de développer l'interface de l'application. Pour l'instant, les modèles de remplacement
 sont prédéfinis pour chaque membre, donc l'utilisateur ne peut pas sélectionner le modèle qu'il souhaite.\\
 
-L'un des aspects sur lequel nous avons réfléchi était la construction d'un modèle complet, sans partie occulté, du corps
+L'un des aspects sur lequel nous avons réfléchi était la construction d'un modèle complet, sans partie occultée, du corps
 humain. Cette étape est réalisable avec un algorithme fourni dans le SDK de la Kinect qui est le \og kinect fusion \fg\cite{
-KinectFusion}. Actuellement, nous mélangeons un nuage de point fourni par la Kinect, avec le dos de la personne occulté, et 
+KinectFusion}. Actuellement, nous mélangeons un nuage de points fourni par la Kinect, avec le dos de la personne occulté, et 
 des modèles 3D dont on ne prend que les points. Même si le tout reste visuellement cohérent, on peut voir la différence entre
-le nuage de point et le modèle 3D.
+le nuage de points et le modèle 3D.
 Cette extension permettrait, en plus d'une simple visualisation de l'utilisateur avec une partie du corps
 différente, de reconstruire un maillage complet avec le corps de l'utilisateur. Ce nouveau modèle 3D pourrait alors être
 directement utilisé dans un film d'animation ou un jeu vidéo.
