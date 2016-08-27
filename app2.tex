@@ -43,7 +43,7 @@ alors recalculer le descripteur sur chacun des objets afin de déterminer les ca
 permet d'obtenir un histogramme pour chaque objet comportant les caractèristiques qu'il contient et le nombre de fois où il
 apparaît. Il ne reste plus qu'à utiliser le descripteur du \textit{bag of word} dans SVM afin de finaliser la création de 
 notre base d'apprentissage. Celle-ci est donc un vecteur d'une taille égale au nombre de classes, donc six, 
-composé d'histogramme dont la taille est égale au nombre de caractèristiques.
+composé d'histogramme dont la taille est égale au nombre de caractèristiques.\\
 
 \begin{figure}[!ht]
   \begin{center}
@@ -51,6 +51,12 @@ composé d'histogramme dont la taille est égale au nombre de caractèristiques.
     \caption{Schéma de la création de la base d'apprentissage}
   \end{center}
 \end{figure}
+
+Nous créons une seconde base d'apprentissage utilisant le même principe que précédemment, mais qui utilise des images que nous 
+produisons nous même avec notre caméra Kinect v2. Cette base comporte quatre objets, chacun représenté par dix à quinze angles de vue différent.
+L'intérêt de cette seconde base est de vérifier que la qualité de l'acquisition ne fait pas varier significativement les résultats de
+la reconnaissance d'objet. Cependant, le fait de créer nous même notre base ne nous permet pas d'avoir autant de donné que dans la base de 
+K. Lai et al\cite{Base1} à cause du temps que cela prend de créer une tel base.
 
 \subsection{Interface utilisateur}
 L'interface utilisateur comprend deux fenêtres. La première comporte une vue avec le nuage de points récupéré à partir de la Kinect
@@ -86,7 +92,15 @@ Pour cela, nous filtrons les données que l'utilisateur a séléctionné. Nos m�
 couramment que l'utilisateur sélectionne du bruit ou des parties de l'environnement. Pour filtrer les données, nous utilisons
 les deux mêmes classes que dans l'application précédente, c'est-à-dire \textit{StatisticalOutlierRemoval} et \textit{VoxelGrid}.
 Lorsque le filtrage est réalisé, il nous faut calculer le même descripteur que dans notre base sur les données sélectionnées par 
-l'utilisateur, puis envoyer le résultat dans notre SVM afin qu'il détermine la classe de l'objet.
+l'utilisateur, puis envoyer le résultat dans notre SVM afin qu'il détermine la classe de l'objet.\\
+
+En utilisant les objets de la base de K. Lai et al\cite{Base1} nous obtenons des résultats très insuffisant de la reconnaissance 
+des objets provenant de notre caméra Kinect v2. Les différences entre nos données et celle provenant de cette base viennent
+de notre sélection et de la caméra. Dans les données de la base, le bruit est presque null tandis que dans notre sélection il 
+y en a un peu plus, malgrès que nous en supprimions un maximum grâce à la librairie PCL. La principal différence entre la caméra
+de K. Lai et al\cite{Base1} et la notre est la résolution de la caméra qui est plus grande dans notre cas. Avec ces paramètres, ne parvient
+à reconnaitre qu'un objet sur les six testés et cela dépend du nombre de mot que nous mettons dans le dictionnaire. Cette première base nous 
+à permis de déterminer que le nombre de mot idéal qu'il faut mettre dans le dictionnaire pour notre application est de deux milles.\\
 
 \subsection{Travaux futurs et applications}
 L'application finale de ce projet est assez complète et très fonctionnelle, cependant il existe plusieurs extensions qu'il 

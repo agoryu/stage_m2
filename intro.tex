@@ -2,7 +2,7 @@
 Durant mon master IVI\footnote{Le master Image Vision Interaction est 
 une spécialité du master informatique de l'université de Lille 1}, 
 nous avons l'occasion de réaliser un stage de fin d'étude. J'ai choisi de réaliser ce stage
-dans le laboratoire 3D-SAM spécialisé dans l'acquisition et le traitement d'image 3D 
+dans l'équipe 3D-SAM du laboratoire CRISTAL spécialisé dans l'acquisition et le traitement d'image 3D 
 à partir de capteur 3D de type Microsoft Kinect. Leurs principaux travaux portent sur
 l'analyse de forme d'objet 3D et la modélisation des variations des formes dans des
 vidéos 3D. Réaliser mon stage dans un laboratoire était une priorité, car mes projets d'avenir
@@ -16,7 +16,7 @@ d'autres laboratoires de recherche.\\
 Ces deux années de master nous ont beaucoup appris sur le traitement d'image et la reconnaissance de 
 forme 2D. Ces sujets m'ont particulièrement intéressé et je souhaite, durant ce stage, approfondir ces
 notions sur des types de données plus complexes comme sur des images 3D. C'est pourquoi je réalise mon
-stage dans l'équipe 3D-Sam avec qui j'avais déjà travaillé sur mon projet de fin d'étude. Cette équipe
+stage dans l'équipe 3D-SAM avec qui j'avais déjà travaillé sur mon projet de fin d'étude. Cette équipe
 dirigée par M. Daoudi comprend cinq membres permanents, un post-doctorant et quatre doctorants. Mes 
 encadrants durant ce stage sont M. Vandeborre et M. Wannous. Ce stage se déroule dans le cadre du
 projet CrABEx qui concerne la production et l'édition de produits 3D pour des applications de
@@ -24,7 +24,7 @@ loisir. L'enjeu de ce projet est d'aider les designer 3D dans la création et l'
 graphiques, en suggérant des éléments appropriés durant leur processus de création ou en générant automatiquement 
 de nouvelles ressources à partir d'éléments existants.
 
-\subsection{Sujet}
+\subsection{Objectif du stage}
 Comme nous pouvons le constater depuis quelques années, les approches 3D intéractives sont de plus en plus 
 présentes dans nos vies, que ce soit dans le domaine de la médecine avec l'utilisation de simulateur
 pour apprendre à réaliser des opérations complexes, dans le loisir avec les jeux vidéo dont le revenu
@@ -48,10 +48,13 @@ Il y a par exemple des capteurs optiques basés sur des caméras infrarouges ave
 \subsection{Problèmatique}
 Les caméras 3D nous permettent d'obtenir un nuage de points de l'environnement qu'elles enregistrent. Cependant, ce 
 type de caméra est peu précis et celles-ci sont souvent bruitées et comportent des valeurs qui n'existent pas dans le monde 
-réel. Ce bruit dépend de plusieurs facteurs comme la luminosité de l'environnement dans lequel nous effectuons l'acquisition,
-ou tout simplement la qualité et la précisions du capteur utilisé. La première difficulté lors de ce projet est de réussir 
-à filtrer les données, de sorte qu'il ne reste que les données réellement présentes.
-L'ensemble des données ne nous intéresse pas forcément. En effet, si nous travaillons sur le corps humain nous n'avons
+réel. 
+%Ce bruit dépend de plusieurs facteurs comme la luminosité de l'environnement dans lequel nous effectuons l'acquisition,
+%ou tout simplement la qualité et la précisions du capteur utilisé. 
+La première difficulté lors de ce projet est de réussir à filtrer les données, de sorte qu'il ne reste que les données réellement présentes.
+L'ensemble des données ne nous intéresse pas forcément. Nous devons donc passer par une phase de segmentation des données
+afin de détecter les objets présents dans une scène 3D.
+En effet, si nous travaillons sur le corps humain nous n'avons
 pas besoin de l'environnement qu'il y a autour, ce surplus de données nous dérange lors de nos traitements. Il faut
 donc trouver une solution permettant de segmenter les données que nous recevons, afin de ne garder que certains objets.\\ 
  
@@ -63,30 +66,38 @@ placer le nouvel objet au même endroit et dans le même sens. Cette partie est 
 si le repositionnement n'est pas parfait et qu'il y a un écart entre deux membres, la scène perd toute sa crédibilité et son 
 réalisme.\\
 
+Les données que nous recupérons via la Kinect sont considérés comme des données 2.5D. En effet, dans ce type de donné nous récupérons des 
+informations de profondeur, mais nous ne pouvons récupérer les information occulté comme le dos de la personne qui est face à la caméra.
+La solution que nous souhaitons mettre en place doit remplacer des données en 2.5D par des données 3D de synthèse. Nous devons donc
+trouver une solution permettant de mettre en correspondance les caractèristiques de ces deux types de données.\\
+
 Nous avons donc trois problèmatiques majeures dans ce projet : 
 \begin{itemize}
   \item Comment filtrer les données de manière à ne traiter que celles qui nous intéressent ?
   \item Comment reconnaître automatiquement un objet dans une scène 3D ?
   \item Comment connaître la position et l'orientation exactes des objets présents dans notre scène ?
+  \item Comment mettre en correspondance des informations 2.5D et 3D ?
 \end{itemize}
 
 \subsection{Organisation}
 
-Pour répondre aux questions précédentes, je vais travailler sur deux applications mettant en avant des problématiques similaires,
-mais avec deux façons différentes d'aborder ces problèmes. Je vais travailler dans un premier temps sur une application qui se focalise
-sur le corps humain. Cette application aura pour but d'identifier les membres du corps, afin que l'utilisateur puisse les modifier
+Pour répondre aux questions précédentes, j'ai travaillé sur deux applications mettant en avant des problématiques similaires,
+mais avec deux façons différentes d'aborder ces problèmes. J'ai travaillé dans un premier temps sur une application qui se focalise
+sur le corps humain. Cette application a pour but d'identifier les membres du corps, afin que l'utilisateur puisse les modifier
 grâce à des modèles 3D existants. Les seules intéractions de l'utilisateur sont donc de cliquer sur le membre à modifier et de sélectionner
-un modèle parmi ceux que l'application lui proposera. La seconde application se concentre sur un environnement intérieur comportant plusieurs
+un modèle parmi ceux que l'application lui proposera afin de l'apparailler au reste du corps humain. 
+La seconde application se concentre sur un environnement intérieur comportant plusieurs
 objets. Ici le but est de segmenter la pièce pour reconnaître les objets présents afin de les ajouter dans une scène. Encore une fois,
 l'utilisateur doit sélectionner un meuble et le modèle 3D qui lui convient dans une liste proposée par l'application.\\
 
 Pour ce projet, j'utilise la caméra Microsoft Kinect v2, qui est l'une des caméras les plus utilisée dans la littérature. Le SDK fourni
 avec cet outil comporte une segmentation du corps humain, la position du squelette de l'utilisateur et l'algorithme Kinect fusion qui
 permet de construire un modèle 3D à partir du nuage de points fourni par la caméra.
-Pour réaliser les deux applications, je vais utiliser un ensemble de bibliothèques telles que la bibliothèque graphique de Microsoft pour
+Pour réaliser les deux applications, j'ai utilisé un ensemble de bibliothèques telles que la bibliothèque graphique de Microsoft pour
 la réalisation de l'interface, la bibliothèque \og Point Cloud Librairie \fg\cite{PCL}(PCL) pour les calculs sur les nuages de points et 
 opencv pour travailler sur les images couleurs et les images de profondeur fournies par la Kinect.\\
 
-Je vais dans un premier temps faire l'état de l'art des solutions existantes sur les problèmatiques de segmentation et de reconnaissance de
+%TODO voir comment remplacer le " je vais" de la derniere phrase
+J'ai dans un premier temps réalisé un état de l'art des solutions existantes sur les problèmatiques de segmentation et de reconnaissance de
 forme à partir de nuage de points ou d'images de profondeur. Puis je vais décrire les solutions testées et appliquées aux deux applications que j'ai
 développées durant ce projet.

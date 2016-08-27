@@ -104,18 +104,36 @@
 %\newpage
 
 \section*{Remerciement}
+Je remercie d'abord M. Daoudi pour m'avoir pris dans son équipe.\\
+
+Je remercie M Vandeborre et M Wannous pour leur soutien, leur conseil et leur suivi durant ce stage.\\
+
+Je remercie l'ensemble des doctorants de l'équipe pour leur accueil et pour la bonne ambiance durant ce stage.\\ 
+
+Je remercie ensuite M Aubert pour son soutien et son investissement durant cette année dans la spécialité IVI.\\
+
+Enfin je remercie l'ensemble de ma famille pour leur soutien durant mes études.
 \newpage
 
 \begin{abstract}
-Lors de ce stage, je vais réaliser deux applications dont le but est de modifier un environnement
-virutel grâce à des éléments du monde réel. Pour cela, je me sers de la caméra 3D Kinect v2
+%Lors de ce stage, je vais réaliser deux applications dont le but est de modifier un environnement
+%virutel grâce à des éléments du monde réel. 
+L'objectif de ce stage est de réaliser une méthode de recherche d'information et de reconnaissance
+de forme 3D. Le travail a été divisé en deux phases. La première concerne des objets non rigides comme
+les parties du corp et la seconde sur des objets rigides comme des meubles.
+Pour cela, je me sers de la caméra 3D Kinect v2
 pour récupérer les informations du monde réel sous forme de nuage de points. Grâce à ces données,
 nous pouvons détecter des objets afin de les matérialiser dans un environnement virtuel.
 Ce projet vise à faciliter les outils de designer afin de leur permettre d'importer des objets
-du monde réel dans leur projet, pour éviter de remodéliser des objets existants. La première 
-application récupère le corps de l'utilisateur dans le but de pouvoir en modifier certaines
-parties. La seconde application permet de scanner un environnement intérieur pour ensuite 
-sélectionner les objets que l'on souhaite ajouter dans un environnement 3D. Les deux applications
+du monde réel dans leur projet, pour éviter de remodéliser des objets existants.\\ 
+
+La première parties du projet consiste à réaliser une
+application qui récupère le corps de l'utilisateur dans le but de pouvoir en modifier certaines
+parties. La seconde partie est une application qui permet 
+d'apparailler des objets 3D rigide dans une scène 3D.
+%de scanner un environnement intérieur pour ensuite 
+%sélectionner les objets que l'on souhaite ajouter dans un environnement 3D. 
+Les deux applications
 passent par une étape de segmentation, puis de détection et de reconnaissance d'objet. Les parties
 les plus complexes à réaliser à l'heure actuelle sont prises en charge par l'utilisateur au travers 
 d'une interface que j'ai construit pour ces deux projets.\\
@@ -137,11 +155,11 @@ appelé SVM.
 \input{intro.tex}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Etat de l'art}
+\section{Etude des approches existantes}
 \input{statOfArt.tex}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Modification des membres du corps humain}
+\section{Appariement de modèles 3D complet et non-complet}
 \input{app1.tex}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

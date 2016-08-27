@@ -1,4 +1,4 @@
-\subsection{Segmentation}
+\subsection{Segmentation 3D}
 %recuperation d'un objet dans l'environnemnt -> interaction utilisateur
 %dire que la création d'une base de connaissance est plus utile que pour le corps humain
 La première étape lors de ce projet va être de segmenter les images que nous recevons de 
@@ -51,7 +51,7 @@ mais elles ne sont pas applicables à un corps humain. Le principal défaut de c
 que celui-ci est trop lisse. La différence entre les normales ou entre les vecteurs de pixel n'est pas assez important
 et celle-ci est trop instable pour que cela s'adapte sur le corps humain qui peut adopter de nombreuses postures.
 
-\subsubsection{Corps humain}
+\subsubsection{Segmentation des parties du corps humain}
 La segmentation du corps humain est un sujet très complexe, car contrairement aux objets, celui-ci bouge et adopte
 des postures différentes. La méthode la plus souvent utilisée pour résoudre cette problématique est de déterminer
 la posture de l'utilisateur, puis de cette posture, déterminer les différentes partie du corps à partir de la labellisation
@@ -103,10 +103,14 @@ des points. Cette orientation est appliquée sur d'autres caratéristiques sensi
 %TODO voir si on ajoute la partie avec pca
 \subsection{Reconnaissance d'objets}
 La reconnaissance d'objets est un sujet assez vaste dans le monde de l'imagerie et il existe de nombreuses
-méthodes dans le domaine, que ce soit pour des images 2D ou 3D. Dans le cas d'image 3D, la méthode la plus utilisée
-est le calcul de descripteur, ce qui correspond à un ensemble de caractèristiques représentant un objet spécifique.
+méthodes dans le domaine, que ce soit pour des images 2D ou 3D. Dans le cas d'image 3D, l'approche de reconnaissance
+d'objet commence par le calcul de descripteur, ce qui correspond à un ensemble de caractèristiques représentant un objet spécifique. 
+Ce descripteur va ensuite être utilisé dans un classifieur afin de réaliser une base comportant les caractèristiques de 
+l'ensemble des objets que nous souhaitons reconnaître par la suite.
+%la méthode la plus utilisée
+%est le calcul de descripteur, ce qui correspond à un ensemble de caractèristiques représentant un objet spécifique.
 
-\subsubsection{Descripteur}
+\subsubsection{Calcul de descripteur}
 \label{descriptor}
 Le nombre de descripteurs qui existent dans le domaine de l'image 3D est assez important, c'est pourquoi pour ce rapport,
 nous allons nous contenter de décrire seulement les plus utilisés. Le descripteur D2\cite{D2} est un des outils de 
@@ -181,7 +185,7 @@ d'une base d'apprentissage. Dans le cas d'un problème linéaire, les SVM recher
 dans l'espace vectoriel, en minimisant les pertes de points dans la base d'apprentissage. Lorsque le problème est non linéaire,
 les SVM changent l'espace dans lequel les points sont projetés à l'aide d'une fonction noyau.
 
-\subsubsection{Sac de mots (bag of word)}
+\subsubsection{L'approche sac de mots (bag of word)}
 Le sac de mots est une représentation dont la première utilisation était de décrire un document texte en fonction d'un dictionnaire.
 Le dictionnaire est un ensemble de mots capable de décrire tous les textes.
 Le principe est de compter le nombre d'occurence d'un mot dans un texte, et ce pour chaque mot du dictionnaire. Cette représentation
@@ -234,7 +238,7 @@ qui correspond, ainsi l'application change la couleur et le label de l'objet sé
 
 \begin{figure}[!ht]
   \begin{center}
-    \includegraphics[width=15cm]{image/recoInteractive1.png}
+    \includegraphics[width=16cm]{image/recoInteractive1.png}
     \caption{Résultat de la reconnaissance interactive de T. Shao et al\cite{interactiveSeg}}
   \end{center}
 \end{figure}
