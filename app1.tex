@@ -29,7 +29,7 @@ décidé de laisser la possibilité à l'utilisateur de changer les seuils en fo
 
 Nous pouvons voir sur la Fig. \ref{fig:seuillage} que le seuil permet effectivement de supprimer beaucoup d'informations
 correspondant à l'environnement, mais qu'il reste beaucoup de bruit dû à la qualité de l'acquisition de la caméra ainsi que 
-des objets qui se trouvent à la même distance que l'utilisateur. La librairie
+des objets qui se trouvent à la même distance que l'utilisateur. La bibliothèque
 PCL\cite{PCL} nous fournit beaucoup d'outils pour ce genre de problèmatique. Il y a une classe appelée \textit{StatisticalOutlierRemoval}
 qui permet de supprimer les points supposés être du bruit. Pour cela, cette classe calcule la distance moyenne d'un point avec son
 voisinage et si cette moyenne est trop élevée, elle supprime le point en question. Cependant, l'utilisation de cette classe ne
@@ -46,6 +46,8 @@ approximés en un point qui correspond au centroïde du voxel. Grâce à l'ensem
 essentielle à nos traitements.
 
 \subsection{Calcul de la distance géodésique}
+La distance géodésique dans un modèle 3D comportant un maillage est la distance entre deux points du modèle en passant par un chemin
+tracé par le maillage.
 Notre première idée pour segmenter le corps humain est d'utiliser la distance géodesique. Y. Liu et al\cite{GIF} montre que la distance
 géodesique pour une même personne, quelque soit sa posture, est toujours la même pour les points de ses membres. Le seul problème 
 est que plusieurs membres ont la même distance géodésique, on ne peut donc pas associer un membre directement à une distance.
@@ -53,7 +55,7 @@ Cependant, il est possible de seuiller le corps et de calculer des descripteurs,
 correspond à quel membre.\\
 
 Avant de calculer la distance géodésique du corps humain, nous avons besoin de créer un maillage sur le nuage de points. Pour cela,
-j'ai repris le principe utilisé pour le descripteur FPFH\cite{FPFH} pour la sélection des voisins. Dans un premier temps, je calcule
+nous avons repris le principe utilisé pour le descripteur FPFH\cite{FPFH} pour la sélection des voisins. Dans un premier temps, nous calculons
 la distance euclidienne de chacun des points du nuage de points avec tous les autres. Pour la création du voisinage, nous considérons non
 seulement le nombre maximum de points à prendre en compte, mais aussi la distance maximum d'un point avec les autres. Nous avons eu
 de nombreux problèmes lorsque nous n'avions pas mis la seconde condition, car lorsque la main de l'utilisateur était trop proche de sa 
@@ -61,7 +63,13 @@ jambe, certains points de la main avaient des voisins dans la jambe. Cette parti
 pas avoir un aussi bon maillage que sur un modèle 3D et la distance géodésique repose sur la qualité de celui-ci. Pour l'améliorer, nous avons créé deux paramètres que l'utilisateur peut modifier. Le premier paramètre est le nombre de voisins d'un point et
 le second est la distance euclidienne maximale entre les voisins.\\
 
-%TODO voir si on met des exemples de maillage defectueux 
+\begin{figure}[!ht]
+  \begin{center}
+    \includegraphics[width=6cm]{image/maillage.PNG}
+    \caption{Exemple de maillage défectueux représenté par les lignes vertes.}
+    \label{fig:seuillage}
+  \end{center}
+\end{figure}
 
 A cette étape de l'algorithme, nous avons donc un maillage et les distances euclidiennes de chaque point avec son voisinnage. Pour calculer
 la distance géodésique du centroïde du nuage de points avec chaque point, nous allons utiliser l'algorithme de Dijkstra\cite{dijkstra}.
@@ -173,19 +181,23 @@ des membres grâce aux labels des articulations. Nous n'avons donc pas besoin de
 corps, car celle-ci a déjà été réalisée par les outils de la Kinect. Il ne reste plus qu'à supprimer le bruit présent dans les membres, les points
 mal labelisés, grâce à la classe StatisticalOutlierRemoval que nous avons vu précédemment.
 
-\subsection{Positionnement}
+\subsection{Appariement d'une partie du corps}
 La dernière étape de cette première application est d'échanger le nuage de points d'un membre du corps par un modèle 3D représentant cette même partie
-du corps. Cette étape est très complexe à cause de deux problèmes majeurs. Tout d'abord, le type d'information n'est pas le même. Dans un cas, nous avons
-un nuage de points dont les points sont très concentrés, mais avec des parties occultées. De l'autre côté, nous avons un modèle 3D avec un nombre de points
-inconnus, donc une concentration de points inconnu, mais sans zone occultée si nous prenons en considération le maillage du modèle. Le second problème
+du corps. Cette étape est très complexe à cause de deux problèmes majeurs. Tout d'abord, le type d'information n'est pas le même. 
+Dans un cas, nous avons
+un nuage de points dont les points sont très concentrés, mais avec des information 2.5D. De l'autre côté, nous avons un modèle 3D complet avec un nombre de points
+inconnus, donc une concentration de points inconnu. Le second problème
 est que le but recherché est de remplacer la partie du corps humain par quelque chose de plus improbable et étonnant comme une partie du corps d'un monstre,
 d'un robot ou d'un corps dont la musculature est différente.\\
+
+%TODO ajout d'une image de comparaison nuage de point vs modele 3D
 
 Nous testons dans un premier temps l'algorithme le plus utilisé dans la littérature en terme de correspondance de modéle 3D. L'algorithme ICP\cite{ICP} est
 disponible dans la librairie PCL\cite{PCL}. Après plusieurs tests sur différentes parties du corps, nous pouvons voir que l'algorithme ICP arrive à déterminer
 la bonne translation, si on compare les centroïdes des modèle 3D avec leur partie du corps correspondant. Cependant, ICP ne parvient pas à déterminer
 l'orientation du modèle. Le problème vient du fait que les données ne sont pas les mêmes. Bien que celles-ci soient différentes, la forme générale
-d'une partie du corps reste la même, que ce soit un modèle ou un nuage de points, donc sa boîte englobante reste similaire également. Nous utilisons la méthode
+d'une partie du corps reste la même, que ce soit un modèle ou un nuage de points, donc sa boîte englobante reste similaire également si l'angle de
+de prise de vue de la Kinect est le même. Nous utilisons la méthode
 de moment d'inertie de S. Ushakov disponible dans PCL pour déterminer l'orientation du nuage de points à partir de la matrice de covariance
 (voir Fig. \ref{tab:modelMatching}).\\
 
@@ -210,7 +222,7 @@ de moment d'inertie de S. Ushakov disponible dans PCL pour déterminer l'orienta
   \end{center}
 \end{figure}
 
-Nous pouvons voir sur les résultats de la correspondance de modéle, qu'il y a deux problèmes importants. Le premier problème est celui de l'orientation
+Nous pouvons voir sur les résultats de la correspondance de modèle, qu'il y a deux problèmes importants. Le premier problème est celui de l'orientation
 de certains modèles 3D. Dans la majorité des tests que nous avons effectué, il y a au moins deux axes sur lequels l'orientation est la bonne. La méthode 
 permet de déterminer l'orientation, mais pas le sens, ce qui implique que dans certains cas, l'un des axes soit visuellement tourné du mauvais côté.
 Le second problème provient du non raccord du modèle avec le reste du nuage de points, qui est très bien illustré dans l'exemple de la pince de crabe.
@@ -221,14 +233,14 @@ dans le modèle 3D de la main de monstre le poignet n'est pas présent.\\
 
 Notre méthode serait suffisamment efficace pour remplacer deux nuages de points de membre du corps provenant d'une caméra 3D. On pourrait facilement
 remplacer la tête de deux personnes.
-Mais la mise en place d'une correspondance entre un nuage de points et un modèle 3D d'une partie du corps n'est pas suffisamment précise. Pour pallier
+Cependant, la mise en place d'une correspondance entre un nuage de points et un modèle 3D d'une partie du corps n'est pas suffisamment précise. Pour pallier
 aux erreurs de l'application, nous avons envisagé de laisser la possibilité à l'utilisateur d'intéragir avec celle-ci. Le plus important est l'orientation
 du modèle, et nous savons qu'en cas d'erreur, il faut effectuer une rotation du modèle de 180\degre sur l'un des trois axes. L'utilisateur devrait juste
 sélectionner l'axe qui ne convient pas et l'application effectuerait la rotation seule. Maintenant que nous avons vu un cas particulier, nous allons pouvoir
 partir sur une application plus généraliste et plus simple en réutilisant ce qui a été vu pour l'application sur le corps humain.  
 
 \subsection{Travaux futurs et applications}
-L'application que nous avons développée est vraiment la base, et de nombreuses extensions peuvent être ajoutées.
+L'application que nous avons développée est prématurée, mais un peu originiale, et de nombreuses extensions peuvent être ajoutées.
 L'une d'entre elles est la possibilité de bouger la partie du corps modifié en temps réel. Pour l'instant, nous filmons
 la scène et l'utilisateur doit mettre en pause l'acquisition lorsqu'il souhaite modifier une partie du corps. Lorsque le
 processus est terminé, il serait intéressant de laisser la possibilité à l'utilisateur de relancer l'acquisition afin de

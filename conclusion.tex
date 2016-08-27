@@ -1,16 +1,16 @@
 Durant ce stage, j'ai effectué deux projets permettant de réaliser la segmentation d'objets complexes comme le corps
-humain ou une scène intérieure à partir d'image 3D provenant d'une caméra Kinect. L'objectif était de créer
+humain ainsi qu'une scène intérieure à partir d'image 3D provenant d'une caméra Kinect. L'objectif était de créer
 des interfaces permettant de faciliter la tâche des professions artistiques en leur permettant d'utiliser 
 des objets du monde réel dans un environement virtuel. Dans la première application sur le corps humain,
 nous avons cherché à récupérer les informations du corps de la personne en face de la caméra et segmenter
 ces informations. Les informations ainsi segmentées pouvaient ensuite être remplacées par l'utilisateur afin de 
 pouvoir mettre des éléments virtuels sur un corps venant du monde réel. Pour réaliser ce projet, nous avons 
-utilisé les algorithmes fournis dans le SDK de la Kinect pour filtrer les données. Au vu de la différence
-des données entre le nuage de points que nous récupérons de notre caméra, et les modèles 3D que nous utilisons,
+utilisé les fonctionnalités fournis dans le SDK de la Kinect pour filtrer les données. Au vu de la différence
+des données entre le nuage de points que nous récupérons avec notre caméra et les modèles 3D que nous utilisons,
 nous avons privilégié une méthode basée sur l'utilisation des caractèristiques de la boîte englobante pour
 déterminer la position et l'orientation du nuage de points de la partie du corps à remplacer. Ces informations
 nous permettent ainsi de transformer le modèle 3D pour que celui-ci soit exactement à la même position que
-l'ancien nuage de points. Le problème de notre méthode est qu'une boîte englobante est une représentation 
+le premier nuage de points. Les limites de notre méthode sont qu'une boîte englobante est une représentation 
 beaucoup trop générale pour une forme, et donc l'orientation du nouveau modèle possède souvent une erreur de 90\degre
 sur l'un des trois axes de la boîte. Pour l'application finale, nous avons pensé proposer à l'utilisateur de 
 corriger ce problème en sélectionnant l'axe qui fait défaut ainsi l'application se chargerait d'appliquer la
@@ -21,7 +21,7 @@ du monde réel. Ces objets du monde réel viennent de l'acquisition d'une pièce
 la segmentation des données afin de détecter les objets présents dans la pièce réelle. La segmentation est réalisée 
 par l'utilisateur qui doit sélectionner l'objet qu'il veut importer dans le monde virtuel. Pour que l'application
 reconnaisse l'objet qui a été sélectionné, nous avons utilisé un algorithme d'apprentissage automatique, les SVM,
-avec le descripteur du \textit{bag of words} formé à partir du descripteur FPFH.\\
+combiné avec l'approche du \textit{bag of words} formé à partir du descripteur FPFH.\\
 %TODO ajout des résultat de la méthode.
 
 Lors de ce stage, j'ai eu l'occasion de perfectionner les connaissances que j'avais acquises lors de mon master.

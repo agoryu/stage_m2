@@ -11,8 +11,8 @@
 
 \subsection{Objectif}
 %interface
-Le but de cette seconde application est de pouvoir modifier un environnement intérieur au travers d'une interface
-simple et intuitive. 
+Le but de cette seconde application est de pouvoir synthétiser un environnement intérieur au travers d'une interface
+simple et intuitive à l'aide d'une caméra. 
 Pour cela, nous allons dans un premier temps récupérer un nuage de points d'une pièce intérieure. Puis à partir
 de ce nuage de points, nous allons segmenter la pièce afin de pouvoir détecter des objets à l'intérieur de celle-ci.
 L'utilisateur doit ensuite sélectionner un objet, ce qui déclenchera l'apparition d'une liste contenant un ensemble de modèle 3D
@@ -36,6 +36,13 @@ La base que nous utilisons est composée de plusieurs exemplaires de chaque obje
 plusieurs images représentant plusieurs angles de vue de l'objet. L'acquisition des objets a été réalisée avec une caméra 
 Kinect v1.\\
 
+%Nous créons une seconde base d'apprentissage utilisant le même principe que précédemment, mais qui utilise des images que nous 
+%produisons nous même avec notre caméra Kinect v2. Cette base comporte quatre objets, chacun représenté par dix à quinze angles de vue différent.
+%L'intérêt de cette seconde base est de vérifier que la qualité de l'acquisition ne fait pas varier significativement les résultats de
+%la reconnaissance d'objet. Cependant, le fait de créer nous même notre base ne nous permet pas d'avoir autant de donné que dans la base de 
+%K. Lai et al\cite{Base1} à cause du temps que cela prend de créer une tel base.
+
+\subsection{Reconnaissance d'objet}
 Le descripteur que nous utilisons pour cette application est le descripteur FPFH\cite{FPFH} qui est l'un des plus efficaces dans la
 reconnaissance d'objet à partir de nuage de points. Nous calculons ce descripteur sur l'ensemble des images de notre base afin de
 créer le dictionnaire de notre \textit{bag of words}. A cette étape du développement, nous avons créé le dictionnaire, il faut
@@ -51,12 +58,22 @@ composé d'histogramme dont la taille est égale au nombre de caractèristiques.
     \caption{Schéma de la création de la base d'apprentissage}
   \end{center}
 \end{figure}
+%TODO parler des résultats de la reconnaissance
+Une fois la base d'apprentissage créée, nous ajoutons la méthode de reconnaissance de forme dans l'application. Cette méthode est basé
+sur l'approche du sac de mots. Elle permet d'apparier le modèle capturé par la caméra avec l'ensemble des modèle d'apprentissage.
+D'abord, nous filtrons les données que l'utilisateur a séléctionné. Nos méthodes de sélection n'étant pas très précises, il arrive
+couramment que l'utilisateur sélectionne du bruit ou des parties de l'environnement. Pour filtrer les données, nous utilisons
+les deux mêmes classes que dans l'application précédente, c'est-à-dire \textit{StatisticalOutlierRemoval} et \textit{VoxelGrid}.
+Lorsque le filtrage est réalisé, il nous faut calculer le même descripteur que dans notre base sur les données sélectionnées par 
+l'utilisateur, puis envoyer le résultat dans notre SVM afin qu'il détermine la classe de l'objet.\\
 
-Nous créons une seconde base d'apprentissage utilisant le même principe que précédemment, mais qui utilise des images que nous 
-produisons nous même avec notre caméra Kinect v2. Cette base comporte quatre objets, chacun représenté par dix à quinze angles de vue différent.
-L'intérêt de cette seconde base est de vérifier que la qualité de l'acquisition ne fait pas varier significativement les résultats de
-la reconnaissance d'objet. Cependant, le fait de créer nous même notre base ne nous permet pas d'avoir autant de donné que dans la base de 
-K. Lai et al\cite{Base1} à cause du temps que cela prend de créer une tel base.
+En utilisant les objets de la base de K. Lai et al\cite{Base1} nous obtenons des résultats très insuffisant de la reconnaissance 
+des objets provenant de notre caméra Kinect v2. Les différences entre nos données et celle provenant de cette base viennent
+de notre sélection et de la caméra. Dans les données de la base, le bruit est presque null tandis que dans notre sélection il 
+y en a un peu plus, malgrès que nous en supprimions un maximum grâce à la librairie PCL. La principal différence entre la caméra
+de K. Lai et al\cite{Base1} et la notre est la résolution de la caméra qui est plus grande dans notre cas. Avec ces paramètres, ne parvient
+à reconnaitre qu'un objet sur les six testés et cela dépend du nombre de mot que nous mettons dans le dictionnaire. Cette première base nous 
+à permis de déterminer que le nombre de mot idéal qu'il faut mettre dans le dictionnaire pour notre application est de deux milles.\\
 
 \subsection{Interface utilisateur}
 L'interface utilisateur comprend deux fenêtres. La première comporte une vue avec le nuage de points récupéré à partir de la Kinect
@@ -66,7 +83,7 @@ par deux points est sélectionné. La seconde est une sorte de pinceau sélectio
 un voisinage prédéfini autour de celle-ci. Lorsque l'utilisateur a sélectionné un objet et que l'application l'a reconnu, un nombre \textit{n} de cases 
 avec des objets apparaît. Les objets dans ces cases sont les mêmes que l'objet sélectionné. Lorsque l'utilisateur clique sur l'une 
 de ces cases, l'objets correspondant est ajouté dans la seconde fenêtre.
-La seconde fenêtre contient l'environnement final dans lequel il y a déjà une piéce modèlisée avec des objets 3D. L'objet sélectionné est ajouté dans cette environnement. Il est ensuite possible de déplacer l'objet dans l'environement virtuel en
+La seconde fenêtre contient l'environnement final dans lequel il y a déjà une pièce modèlisée avec des objets 3D. L'objet sélectionné est ajouté dans cette environnement. Il est ensuite possible de déplacer l'objet dans l'environement virtuel en
 cliquant dessus afin de le positionner à l'endoit voulu dans la pièce.
 
 \begin{figure}[!h]
@@ -85,22 +102,64 @@ cliquant dessus afin de le positionner à l'endoit voulu dans la pièce.
   \end{center}
 \end{figure}
 
-\subsection{Reconnaissance d'objet}
-%TODO parler des résultats de la reconnaissance
-Une fois la base d'apprentissage et l'interface créée, nous ajoutons le code de la reconnaissance de forme dans l'application.
-Pour cela, nous filtrons les données que l'utilisateur a séléctionné. Nos méthodes de sélection n'étant pas très précises, il arrive
-couramment que l'utilisateur sélectionne du bruit ou des parties de l'environnement. Pour filtrer les données, nous utilisons
-les deux mêmes classes que dans l'application précédente, c'est-à-dire \textit{StatisticalOutlierRemoval} et \textit{VoxelGrid}.
-Lorsque le filtrage est réalisé, il nous faut calculer le même descripteur que dans notre base sur les données sélectionnées par 
-l'utilisateur, puis envoyer le résultat dans notre SVM afin qu'il détermine la classe de l'objet.\\
+\subsection{Experimentation}
+Suite à la création de notre base d'apprentissage à partir de nuage de point que nous avons récupéré dans la base de 
+K. Lai et al\cite{Base1}. Pour nos tests nous récupérons dix modèle pour chaque classe de notre base que nous n'avons pas
+utilisé pour la création de celle-ci. Nous testons notre algorithme avec ces modèles et en modifiant la taille du dictionnaire.\\
+\begin{figure}[!ht]
+  \begin{center}
+    \begin{tabular}{|c|c|c|c|c|c|c|}
+    \hline
+    \backslashbox{Testé}{Résultat} & balle & banane & bouteille & téléphone portable & clavier & mug\\
+    \hline
+    balle & 10 & 0 & 0 & 0 & 0 & 0\\
+    \hline
+    banane & 0 & 7 & 0 & 2 & 0 & 1\\
+    \hline
+    bouteille & 0 & 6 & 2 & 0 & 0 & 2\\
+    \hline
+    téléphone portable & 0 & 1 & 0 & 7 & 2 & 0\\
+    \hline
+    clavier & 0 & 2 & 0 & 8 & 0 & 0\\
+    \hline
+    mug & 0 & 0 & 0 & 0 & 0 & 10\\
+    \hline
+    \end{tabular}
+    \caption{Résultat obtenu avec un dictionnaire de mille mots}
+    \label{tab:result1000}
+  \end{center}
+\end{figure}
 
-En utilisant les objets de la base de K. Lai et al\cite{Base1} nous obtenons des résultats très insuffisant de la reconnaissance 
-des objets provenant de notre caméra Kinect v2. Les différences entre nos données et celle provenant de cette base viennent
-de notre sélection et de la caméra. Dans les données de la base, le bruit est presque null tandis que dans notre sélection il 
-y en a un peu plus, malgrès que nous en supprimions un maximum grâce à la librairie PCL. La principal différence entre la caméra
-de K. Lai et al\cite{Base1} et la notre est la résolution de la caméra qui est plus grande dans notre cas. Avec ces paramètres, ne parvient
-à reconnaitre qu'un objet sur les six testés et cela dépend du nombre de mot que nous mettons dans le dictionnaire. Cette première base nous 
-à permis de déterminer que le nombre de mot idéal qu'il faut mettre dans le dictionnaire pour notre application est de deux milles.\\
+\begin{figure}[!ht]
+  \begin{center}
+    \begin{tabular}{|c|c|c|c|c|c|c|}
+    \hline
+    \backslashbox{Testé}{Résultat} & balle & banane & bouteille & téléphone portable & clavier & mug\\
+    \hline
+    balle & 10 & 0 & 0 & 0 & 0 & 0\\
+    \hline
+    banane & 4 & 5 & 0 & 0 & 0 & 1\\
+    \hline
+    bouteille & 1 & 5 & 3 & 0 & 0 & 1\\
+    \hline
+    téléphone portable & 0 & 0 & 0 & 6 & 4 & 0\\
+    \hline
+    clavier & 0 & 3 & 0 & 5 & 2 & 0\\
+    \hline
+    mug & 1 & 0 & 0 & 0 & 0 & 9\\
+    \hline
+    \end{tabular}
+    \caption{Résultat obtenu avec un dictionnaire de deux milles mots}
+    \label{tab:result2000}
+  \end{center}
+\end{figure}
+
+Comme nous pouvons le voire sur les Fig. \ref{tab:result1000} et \ref{tab:result2000} les résultats ne sont pas très 
+satisfaisant. Quelque soit la taille du dictionnaire, nous arrivons à un résultat qui atteint approximativement 60\%
+de reconnaissance. Certains objets sont parfaitement reconnu comme la balle ou le mug, d'autres objets ne sont pas du tout 
+reconnu comme la bouteille. Nous n'avons pas eu le temps durant ce stage de tester davantage de cas de figure en modifiant les différents 
+paramètres de l'application, ce qui peux expliquer ces résultats assez faible. Nous nous sommes concentré plutôt sur la taille
+du dictionnaire, mais d'autre paramètres peuvent encore améliorer les résultats.
 
 \subsection{Travaux futurs et applications}
 L'application finale de ce projet est assez complète et très fonctionnelle, cependant il existe plusieurs extensions qu'il 
