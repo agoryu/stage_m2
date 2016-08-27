@@ -48,7 +48,7 @@ essentielle à nos traitements.
 \subsection{Calcul de la distance géodésique}
 La distance géodésique dans un modèle 3D comportant un maillage est la distance entre deux points du modèle en passant par un chemin
 tracé par le maillage.
-Notre première idée pour segmenter le corps humain est d'utiliser la distance géodesique. Y. Liu et al\cite{GIF} montre que la distance
+Notre première idée pour segmenter le corps humain est d'utiliser la distance géodesique. Y. Liu et al\cite{GIF} montrent que la distance
 géodesique pour une même personne, quelque soit sa posture, est toujours la même pour les points de ses membres. Le seul problème 
 est que plusieurs membres ont la même distance géodésique, on ne peut donc pas associer un membre directement à une distance.
 Cependant, il est possible de seuiller le corps et de calculer des descripteurs, afin de déterminer quel nuage de points
@@ -66,7 +66,7 @@ le second est la distance euclidienne maximale entre les voisins.\\
 \begin{figure}[!ht]
   \begin{center}
     \includegraphics[width=6cm]{image/maillage.PNG}
-    \caption{Exemple de maillage défectueux représenté par les lignes vertes.}
+    \caption{Exemple de maillage défectueux représenté par les lignes vertes}
     \label{fig:seuillage}
   \end{center}
 \end{figure}

@@ -59,8 +59,8 @@ composé d'histogramme dont la taille est égale au nombre de caractèristiques.
   \end{center}
 \end{figure}
 %TODO parler des résultats de la reconnaissance
-Une fois la base d'apprentissage créée, nous ajoutons la méthode de reconnaissance de forme dans l'application. Cette méthode est basé
-sur l'approche du sac de mots. Elle permet d'apparier le modèle capturé par la caméra avec l'ensemble des modèle d'apprentissage.
+Une fois la base d'apprentissage créée, nous ajoutons la méthode de reconnaissance de forme dans l'application. Cette méthode est basée
+sur l'approche du sac de mots. Elle permet d'apparier le modèle capturé par la caméra avec l'ensemble des modèles d'apprentissage.
 D'abord, nous filtrons les données que l'utilisateur a séléctionné. Nos méthodes de sélection n'étant pas très précises, il arrive
 couramment que l'utilisateur sélectionne du bruit ou des parties de l'environnement. Pour filtrer les données, nous utilisons
 les deux mêmes classes que dans l'application précédente, c'est-à-dire \textit{StatisticalOutlierRemoval} et \textit{VoxelGrid}.
@@ -102,10 +102,12 @@ cliquant dessus afin de le positionner à l'endoit voulu dans la pièce.
   \end{center}
 \end{figure}
 
-\subsection{Experimentation}
-Suite à la création de notre base d'apprentissage à partir de nuage de point que nous avons récupéré dans la base de 
-K. Lai et al\cite{Base1}. Pour nos tests nous récupérons dix modèle pour chaque classe de notre base que nous n'avons pas
-utilisé pour la création de celle-ci. Nous testons notre algorithme avec ces modèles et en modifiant la taille du dictionnaire.\\
+\subsection{Experimentations}
+Suite à la création de notre base d'apprentissage à partir de nuages de points que nous avons récupérés dans la base de 
+K. Lai et al\cite{Base1}, nous testons celle-ci afin de valider notre méthode. 
+Pour nos tests, nous récupérons dix modèles pour chaque classe de notre base. Ces modèles viennent de la base de 
+K. Lai et al\cite{Base1}, mais ne font pas partie de celle que nous avons créée. Nous testons notre algorithme avec ces 
+modèles et nous expérimentons également différentes tailles de dictionnaires.\\
 \begin{figure}[!ht]
   \begin{center}
     \begin{tabular}{|c|c|c|c|c|c|c|}
@@ -125,7 +127,7 @@ utilisé pour la création de celle-ci. Nous testons notre algorithme avec ces m
     mug & 0 & 0 & 0 & 0 & 0 & 10\\
     \hline
     \end{tabular}
-    \caption{Résultat obtenu avec un dictionnaire de mille mots}
+    \caption{Résultats obtenus avec un dictionnaire de mille mots}
     \label{tab:result1000}
   \end{center}
 \end{figure}
@@ -149,17 +151,17 @@ utilisé pour la création de celle-ci. Nous testons notre algorithme avec ces m
     mug & 1 & 0 & 0 & 0 & 0 & 9\\
     \hline
     \end{tabular}
-    \caption{Résultat obtenu avec un dictionnaire de deux milles mots}
+    \caption{Résultats obtenus avec un dictionnaire de deux milles mots}
     \label{tab:result2000}
   \end{center}
 \end{figure}
 
-Comme nous pouvons le voire sur les Fig. \ref{tab:result1000} et \ref{tab:result2000} les résultats ne sont pas très 
-satisfaisant. Quelque soit la taille du dictionnaire, nous arrivons à un résultat qui atteint approximativement 60\%
-de reconnaissance. Certains objets sont parfaitement reconnu comme la balle ou le mug, d'autres objets ne sont pas du tout 
-reconnu comme la bouteille. Nous n'avons pas eu le temps durant ce stage de tester davantage de cas de figure en modifiant les différents 
-paramètres de l'application, ce qui peux expliquer ces résultats assez faible. Nous nous sommes concentré plutôt sur la taille
-du dictionnaire, mais d'autre paramètres peuvent encore améliorer les résultats.
+Comme nous pouvons le voir sur les Fig. \ref{tab:result1000} et \ref{tab:result2000} les résultats ne sont pas très 
+satisfaisants. Quelque soit la taille du dictionnaire, nous arrivons à un résultat qui atteint approximativement 60\%
+de reconnaissance. Certains objets sont parfaitement reconnus, comme la balle ou le mug, d'autres objets ne sont pas du tout 
+reconnus comme la bouteille. Nous n'avons pas eu le temps, durant ce stage, de tester davantage de cas de figure en modifiant les différents 
+paramètres de l'application, ce qui peut expliquer ces résultats assez faibles. Nous nous sommes concentrés plutôt sur la taille
+du dictionnaire, mais d'autres paramètres peuvent encore améliorer les résultats.
 
 \subsection{Travaux futurs et applications}
 L'application finale de ce projet est assez complète et très fonctionnelle, cependant il existe plusieurs extensions qu'il 

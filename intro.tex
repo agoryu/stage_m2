@@ -52,9 +52,9 @@ réel.
 %Ce bruit dépend de plusieurs facteurs comme la luminosité de l'environnement dans lequel nous effectuons l'acquisition,
 %ou tout simplement la qualité et la précisions du capteur utilisé. 
 La première difficulté lors de ce projet est de réussir à filtrer les données, de sorte qu'il ne reste que les données réellement présentes.
-L'ensemble des données ne nous intéresse pas forcément. Nous devons donc passer par une phase de segmentation des données
+L'ensemble des données ne nous intéresse pas forcément. Nous devons donc passer par une phase de segmentation des données,
 afin de détecter les objets présents dans une scène 3D.
-En effet, si nous travaillons sur le corps humain nous n'avons
+En effet, si nous travaillons sur le corps humain, nous n'avons
 pas besoin de l'environnement qu'il y a autour, ce surplus de données nous dérange lors de nos traitements. Il faut
 donc trouver une solution permettant de segmenter les données que nous recevons, afin de ne garder que certains objets.\\ 
  
@@ -66,8 +66,8 @@ placer le nouvel objet au même endroit et dans le même sens. Cette partie est 
 si le repositionnement n'est pas parfait et qu'il y a un écart entre deux membres, la scène perd toute sa crédibilité et son 
 réalisme.\\
 
-Les données que nous recupérons via la Kinect sont considérés comme des données 2.5D. En effet, dans ce type de donné nous récupérons des 
-informations de profondeur, mais nous ne pouvons récupérer les information occulté comme le dos de la personne qui est face à la caméra.
+Les données que nous recupérons via la Kinect sont des données 2.5D. En effet, dans ce type de données nous récupérons des 
+informations de profondeur, mais nous ne pouvons récupérer les informations occultées comme le dos de la personne qui est face à la caméra.
 La solution que nous souhaitons mettre en place doit remplacer des données en 2.5D par des données 3D de synthèse. Nous devons donc
 trouver une solution permettant de mettre en correspondance les caractèristiques de ces deux types de données.\\
 
